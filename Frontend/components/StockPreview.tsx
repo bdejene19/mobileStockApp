@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React, {FC, useState} from "react";
 import {View, StyleSheet, Text} from 'react-native';
 
 interface StockProps {
@@ -6,23 +6,26 @@ interface StockProps {
     companyName: string,
     stockValue: number,
     dayPercentMove: number,
+    bgColor?: string,
 }
 
 export const StockPreview: FC<StockProps> = (props) => {
     return (
         <View style={styles.container}>
-                        <Text style={{flexBasis: '45%', paddingLeft:'8%'}}>Second</Text>
-
-            <View style={styles.textWrapper}>
-            <Text>This should be my first div</Text>
-            
+            <View style={styles.companyNameWrapper}>
+                <Text style={styles.header}>{props.ticker}</Text>
+                <Text style={styles.subHeader}>{props.companyName}</Text>
 
             </View>
 
-            <View style={styles.textWrapper}>
-            <Text>Hello  {props.ticker}</Text>
-
-
+            <View style={styles.dayGraph}>
+            </View>
+            
+            <View style={styles.numbersContainer}>
+                <Text style={styles.stockPrice}>{props.stockValue}</Text>
+                <View style={styles.dependentBG}>
+                    <Text>{props.dayPercentMove}%</Text>
+                </View>
             </View>
 
         </View>
@@ -34,18 +37,73 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         flexWrap: "wrap",
         alignItems: 'center',
+        backgroundColor: 'skyblue',
+        shadowColor: 'black',
+        shadowOffset: {width: 299, height: 300},
+        height: 70,
+        margin: '3%',
+        padding: '1%',
+        borderRadius: 15,
+        
+        
         // height: 500,
     },
 
-    textWrapper: {
-        flexBasis: "55%",
+    companyNameWrapper: {
+        width: "30%",
         fontWeight: "600",
+        height: '100%',
         borderStyle: "solid",
-        marginBottom: '5%',
-        height: 70,
-
+        paddingLeft: '5%',
+        // alignItems: 'left',
+        justifyContent: 'center',
+        // marginBottom: '5%',
         
+    },
+    
+    dayGraph: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: "100%",
+        width: '50%',
         borderWidth: 3,
         borderColor: '#f0fc',
+    },
+
+    numbersContainer: {
+        width: '20%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 3,
+        borderColor: '#f0fc'
+    },
+
+    header: {
+        fontSize: 20,
+        fontWeight: '800',
+    },
+
+    subHeader: {
+        fontSize: 12,
+        fontWeight: "600",
+    },
+
+    stockPrice: {
+        fontSize: 20,
+        fontWeight: "700",
+    },
+
+    dependentBG: {
+        width: 40,
+        padding: '1%',
+        paddingTop: '5%',
+        paddingBottom: '5%',
+        justifyContent: "center",
+        alignItems: 'center',
+        // backgroundColor: `${(props: {stockValue: number}) => props.stockValue < 0 ? "red" : 'green' }`,
+        borderRadius: 5,
+        
     }
+    
 })

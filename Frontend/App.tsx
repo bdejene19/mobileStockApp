@@ -8,6 +8,11 @@
  * @format
  */
 
+
+/** Key command line code to start running app: 
+ * Terminal 1) npx react-native start (to start metro bundler => similar to webpack, but for mobile)
+ * Terminal 2) npx react-native run-ios (to run app on Xcode simulator/emulator)
+ */
 import React from 'react';
 import {
   SafeAreaView,
@@ -65,12 +70,11 @@ const App = () => {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+    <SafeAreaView>
+      {/* <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} /> */}
       <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
+        contentInsetAdjustmentBehavior="automatic">
+        {/* <Header />
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
@@ -89,8 +93,8 @@ const App = () => {
             Read the docs to discover what to do next:
           </Section>
           <LearnMoreLinks />
-        </View>
-              <StockPreview ticker='NKE' companyName="nike"  stockValue={1.3} dayPercentMove={3}></StockPreview>
+        </View> */}
+              <StockPreview ticker='NKE' companyName="nike"  stockValue={1.3} dayPercentMove={3} bgColor={3 > 0 ? 'green' : 'red'}></StockPreview>
 
       </ScrollView>
     </SafeAreaView>
