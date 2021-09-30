@@ -10,7 +10,7 @@ import { NativeStackScreenProps} from '@react-navigation/native-stack';
 type homeScreenProps = NativeStackScreenProps<RootStackParamList, Routes.Home>;
 
 
-const Home: FC<homeScreenProps> = () => {
+const Home: FC = () => {
     const navigation = useNavigation<homeScreenProps>();
     
     return (

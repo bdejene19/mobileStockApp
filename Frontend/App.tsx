@@ -14,6 +14,7 @@
  * Terminal 2) npx react-native run-ios (to run app on Xcode simulator/emulator)
  */
 import React from 'react';
+// import 'react-native-gesture-handler';
 import {
   SafeAreaView,
   ScrollView,
@@ -31,36 +32,16 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import { StockPreview } from './components/StockPreview';
 
-const Section: React.FC<{
-  title: string;
-}> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+import 'react-native-gesture-handler';
 
-    </View>
-  );
-};
+// react-native page navigator imports => similar to react-router
+import {NavigationContainer} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Home  from './pages/Home';
+import { FullStockView } from './pages/FullStockView';
+import { RootStackParamList,Routes } from './routes';
+
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -69,39 +50,34 @@ const App = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  return (
-    <SafeAreaView>
-      {/* <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} /> */}
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic">
-        {/* <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View> */}
-              <StockPreview ticker='NKE' companyName="nike"  stockValue={1.3} dayPercentMove={3} bgColor={3 > 0 ? 'green' : 'red'}></StockPreview>
+  // creating stack data structure to navigate between pages
+  const RootStack = createNativeStackNavigator<RootStackParamList>();
 
-      </ScrollView>
-    </SafeAreaView>
+  return (
+    
+
+        <NavigationContainer>
+
+            {/* This is similar to creating a switch with react-router => it holds our different routes for our screens */}
+            <RootStack.Navigator initialRouteName={Routes.Home}>
+              <RootStack.Screen name={Routes.Home} component={Home} options={{title: 'WatchList'}}></RootStack.Screen>
+              <RootStack.Screen name={Routes.Test} component={FullStockView} options={{title:'this is full stock view'}}></RootStack.Screen>
+            </RootStack.Navigator>
+            {/* <FullStockView/> */}
+
+        </NavigationContainer>
+
+
+
+
   );
 };
 
 const styles = StyleSheet.create({
+  globalWrapper: {
+    margin: '3%',
+    top: '5%',
+  },
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,

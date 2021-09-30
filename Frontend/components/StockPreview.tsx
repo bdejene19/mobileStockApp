@@ -1,7 +1,7 @@
 import React, {FC, useState} from "react";
 import {View, StyleSheet, Text} from 'react-native';
 
-interface StockProps {
+export interface StockProps {
     ticker: string,
     companyName: string,
     stockValue: number,
@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
         shadowColor: 'black',
         shadowOffset: {width: 299, height: 300},
         height: 70,
-        margin: '3%',
         padding: '1%',
         borderRadius: 15,
         
@@ -54,7 +53,7 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         height: '100%',
         borderStyle: "solid",
-        paddingLeft: '5%',
+        paddingLeft: '3%',
         // alignItems: 'left',
         justifyContent: 'center',
         // marginBottom: '5%',
@@ -73,7 +72,6 @@ const styles = StyleSheet.create({
     numbersContainer: {
         width: '20%',
         height: '100%',
-        justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 3,
         borderColor: '#f0fc'
@@ -82,6 +80,8 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 20,
         fontWeight: '800',
+        justifyContent: 'flex-start',
+
     },
 
     subHeader: {
@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
         paddingBottom: '5%',
         justifyContent: "center",
         alignItems: 'center',
-        // backgroundColor: `${(props: {stockValue: number}) => props.stockValue < 0 ? "red" : 'green' }`,
         borderRadius: 5,
         
     }
