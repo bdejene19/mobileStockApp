@@ -17,7 +17,7 @@ interface StockContent {
     dayPercentMove: number,
 }
 
-type fullStockProps = NativeStackScreenProps<RootStackParamList, Routes.Test>;
+type fullStockProps = NativeStackScreenProps<RootStackParamList, Routes.FullStock>;
 
 
 export const FullStockView: FC = (props) => {

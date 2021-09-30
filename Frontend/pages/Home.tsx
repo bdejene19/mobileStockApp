@@ -7,7 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 import { NativeStackScreenProps} from '@react-navigation/native-stack';
 
 // defining screen type => takes 2 params: our list of pages, then the name of the current route;
-type homeScreenProps = NativeStackScreenProps<RootStackParamList, Routes.Home>;
+type homeScreenProps = NativeStackScreenProps<RootStackParamList, Routes.WatchList>;
 
 
 const Home: FC = () => {
@@ -17,7 +17,7 @@ const Home: FC = () => {
         <View>
             <SearchBar></SearchBar>
             <StockPreview ticker='NKE' companyName="nike"  stockValue={1.3} dayPercentMove={3} bgColor='green'></StockPreview>
-            <Button title='test Nav' onPress={() => navigation.navigation.navigate(Routes.Test) }></Button>
+            <Button title='test Nav' onPress={() => navigation.navigation.navigate(Routes.FullStock) }></Button>
         </View>
     )
 }

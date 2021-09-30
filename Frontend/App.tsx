@@ -55,13 +55,13 @@ const App = () => {
 
   return (
     
-
+        // Note: navigation container needs to be at top level to render => simple issue but causes problems
         <NavigationContainer>
 
             {/* This is similar to creating a switch with react-router => it holds our different routes for our screens */}
-            <RootStack.Navigator initialRouteName={Routes.Home}>
-              <RootStack.Screen name={Routes.Home} component={Home} options={{title: 'WatchList'}}></RootStack.Screen>
-              <RootStack.Screen name={Routes.Test} component={FullStockView} options={{title:'this is full stock view'}}></RootStack.Screen>
+            <RootStack.Navigator initialRouteName={Routes.WatchList}>
+              <RootStack.Screen name={Routes.WatchList} component={Home} options={{title: 'WatchList'}}></RootStack.Screen>
+              <RootStack.Screen name={Routes.FullStock} component={FullStockView} options={{title:'this is full stock view'}}></RootStack.Screen>
             </RootStack.Navigator>
             {/* <FullStockView/> */}
 
