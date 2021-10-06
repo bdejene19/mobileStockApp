@@ -52,7 +52,6 @@ const App = () => {
 
   // creating stack data structure to navigate between pages
   const RootStack = createNativeStackNavigator<RootStackParamList>();
-
   return (
     
         // Note: navigation container needs to be at top level to render => simple issue but causes problems

@@ -6,7 +6,7 @@ import React from 'react';
 
 export enum Routes {
     WatchList = 'Home',
-    FullStock = 'Test',
+    FullStock = 'FullStock',
 }
 
 // for typescript => need to create an interface since create "createStackNavigataor()" accepts a type argument

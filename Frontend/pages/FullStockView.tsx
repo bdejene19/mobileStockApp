@@ -20,21 +20,20 @@ interface StockContent {
 type fullStockProps = NativeStackScreenProps<RootStackParamList, Routes.FullStock>;
 
 
-export const FullStockView: FC = (props) => {
-    const navigation = useNavigation<fullStockProps>().navigation;
+export const FullStockView: FC<StockContent> = (props) => {
     return (
         <View style={styles.headWrap}>
             <View style={styles.headContainer}>
                 <Text>Page 2222</Text>
-                {/* <View style={styles.nav}>
-                    <FontAwesomeIcon icon={ faCoffee }/>
+                <View style={styles.nav}>
+                    {/* <FontAwesomeIcon icon={ faCoffee }/> */}
                     <Text style={styles.textContent}>{props.ticker}</Text>
                 </View>
 
                 <View style={styles.mainNavContent}>
                     <Text style={styles.textContent}>{props.companyName}</Text>
                     <Text>{props.dayPercentMove}</Text>
-                </View> */}
+                </View>
 
             </View>
         </View>
