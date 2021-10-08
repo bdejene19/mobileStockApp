@@ -9,7 +9,6 @@ import { NativeStackScreenProps} from '@react-navigation/native-stack';
 
 // defining screen type => takes 2 params: our list of pages, then the name of the current route;
 type homeScreenProps = NativeStackScreenProps<RootStackParamList, Routes.WatchList>;
-const finnhub= require('finnhub');
 
 
 
@@ -26,20 +25,34 @@ const Home: FC<homeScreenProps> = ({navigation}) => {
     useEffect(() => {
         // websockets pre-built into latest react native=> therefore dont need to rely on 3rd party libraries
         // NOTE: for react-native && websockets => need to use ip address and wss
-        socket.current = new WebSocket('ws://localhost:8000',);
-        let ws = socket.current;
+        // socket.current = new WebSocket('ws://localhost:8000',);
+        socket.current = new WebSocket('wss://ws.twelvedata.com/v1/quotes/price?apikey=6ca188086bb74ba88ddaa94c9d184322');
         
+        let ws = socket.current;
 
+        
+        
+        console.log
         ws.onopen = () => {
-            console.log('ws is now open ');
-            ws.send('why wont this take a a message to the server');
+            console.log('connected')
+            // HOOOORAY! this code ws.send is getting real time feed back from server => however, need to figure out how to subscrobe to multiple channels
+            // ws.send('{"type":"subscribe","symbol":"AAPL"}')
+            ws.send(`{
+                "action": "subscribe", 
+                "params": {
+                    "symbols": "AAPL"
+                }
+              }`)
+            // ws.send('why wont this take a a message to the server');
+            // fetch('https://api.twelvedata.com/stocks?symbol:NYSE').then(res => res.json()).then(res => console.log(res)).catch(e => console.log())
         } ;
 
-        ws.onmessage = (msg) => console.log('this is my message FROM my server: ', msg.data);
+        ws.onmessage = (msg) => console.log('this is my message from twelvedata api: ', msg.data);
 
         ws.onclose = () => console.log(ws.readyState);
 
         ws.onerror = e => console.log(e);
+        // ws.close();
 
     })
 
