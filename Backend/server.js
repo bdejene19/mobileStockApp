@@ -4,8 +4,7 @@ const bodyParser = require('body-parser');
 // bring in mongoose to connect to database
 const mongoose = require('mongoose');
 
-// will use finnhub api for real time data => install finnhub dependency and require
-const finnhub = require('finnhub');
+// will use twelvedata api for real time data => install twelvedata dependency and require
 
 // bring in socketio for websockets
 const socketio = require('socket.io');
@@ -45,10 +44,10 @@ server.listen(PORT, () => console.log(`server running on ${PORT}`))
 // NOTE: for websocket server (wss), it will connect to your client websocket if parameter passed is 'connection'
 // BUT, it NEEDS  to be 'connect' in order for wss to accept and receive  data
 wss.on('connect', (ws) => {  
-    ws.on('message', (msg) => console.log('this is a message fro mthe client: ', msg));  
+    ws.send('websocket is connected') 
+    ws.on('message', (msg) => console.log('where is this smessage coming from'));  
     ws.on('close', () => console.log('ws has closed'));
 
-    ws.send('websocket has closed') 
 })
 
 
