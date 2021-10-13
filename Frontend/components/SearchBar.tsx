@@ -1,6 +1,5 @@
 import React, { FC, useState} from 'react';
 import {View, TextInput, StyleSheet, NativeSyntheticEvent, TextInputChangeEventData} from 'react-native';
-import SearchIcon from '@mui/icons-material/Search';
 
 
 
@@ -8,7 +7,8 @@ export const SearchBar: FC = () => {
     const [query, setQuery] = useState("");
     return (
         <View style={styles.searchContainer}>
-            <TextInput placeholder='Search' value={query} onChangeText={setQuery}></TextInput>
+            {/* <SearchIcon style={{color: 'white'}}/> */}
+            <TextInput placeholder='Search' placeholderTextColor='white' value={query}  onChangeText={setQuery} style={styles.inputSearch}></TextInput>
         </View>
         
     )
@@ -21,11 +21,16 @@ const styles = StyleSheet.create({
         // height: 10,
         padding: '2%',
         alignSelf:'center',
-        borderColor: 'black',
+        borderColor: 'white',
+        marginTop: '5%',
         borderRadius: 10,
         borderWidth: 2,
         flexDirection: 'row',
-    }
+    }, 
 
+    inputSearch: {
+        color: 'green',
+        fontSize: 16,
+    }
 
 })

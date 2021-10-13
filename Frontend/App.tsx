@@ -37,10 +37,11 @@ import 'react-native-gesture-handler';
 
 // react-native page navigator imports => similar to react-router
 import {NavigationContainer} from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import Home  from './pages/Home';
 import { FullStockView } from './pages/FullStockView';
 import { RootStackParamList,Routes } from './routes';
+import { green } from '@mui/material/colors';
 
 
 const App = () => {
@@ -52,6 +53,24 @@ const App = () => {
 
   // creating stack data structure to navigate between pages
   const RootStack = createNativeStackNavigator<RootStackParamList>();
+  const navigationOptions: NativeStackNavigationOptions = {
+    title: 'Watchlist',
+    headerStyle: {
+      backgroundColor: 'black',
+    }
+,
+    headerTitleStyle: {
+      fontWeight: '700',
+      color: 'white',
+      fontSize: 28,
+    },
+
+    headerTitleAlign: 'left',
+    headerTintColor:'white',   
+  
+    
+   
+  }
   return (
     
         // Note: navigation container needs to be at top level to render => simple issue but causes problems
@@ -59,10 +78,9 @@ const App = () => {
 
             {/* This is similar to creating a switch with react-router => it holds our different routes for our screens */}
             <RootStack.Navigator initialRouteName={Routes.WatchList}>
-              <RootStack.Screen name={Routes.WatchList} component={Home} options={{title: 'WatchList'}}></RootStack.Screen>
+              <RootStack.Screen name={Routes.WatchList} component={Home} options={navigationOptions}></RootStack.Screen>
               <RootStack.Screen name={Routes.FullStock} component={FullStockView} options={{title:'this is full stock view'}}></RootStack.Screen>
             </RootStack.Navigator>
-            {/* <FullStockView/> */}
 
         </NavigationContainer>
 

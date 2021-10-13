@@ -1,5 +1,8 @@
+import { useNavigation } from "@react-navigation/core";
 import React, {FC, useState} from "react";
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text,} from 'react-native';
+import { TouchableOpacity } from "react-native-gesture-handler";
+import {Routes} from '../routes';
 
 export interface StockProps {
     ticker: string,
@@ -11,7 +14,7 @@ export interface StockProps {
 
 export const StockPreview: FC<StockProps> = (props) => {
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={() => console.log('button pressed')}>
             <View style={styles.companyNameWrapper}>
                 <Text style={styles.header}>{props.ticker}</Text>
                 <Text style={styles.subHeader}>{props.companyName}</Text>
@@ -28,7 +31,7 @@ export const StockPreview: FC<StockProps> = (props) => {
                 </View>
             </View>
 
-        </View>
+        </TouchableOpacity>
     );
 };
 
@@ -38,8 +41,7 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         alignItems: 'center',
         backgroundColor: 'skyblue',
-        shadowColor: 'black',
-        shadowOffset: {width: 299, height: 300},
+        shadowColor: 'white',
         height: 70,
         padding: '1%',
         borderRadius: 15,
