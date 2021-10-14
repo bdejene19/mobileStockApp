@@ -3,7 +3,7 @@ import {View, Text, ScrollView, StyleSheet, SafeAreaView, Button, TouchableOpaci
 
 
 export const ScrollGraphNav: FC = () => {
-    const [graphOption, setGraphOption] = useState<string>();
+    const [graphOption, setGraphOption] = useState<string>('1D');
     const navOptions = useMemo(() => {
         return {
             oneDay: '1D',
@@ -34,28 +34,29 @@ export const ScrollGraphNav: FC = () => {
                     <Text style={graphOption === navOptions.post ? {color: 'orange'}: null}>{navOptions.post}</Text>
                 </TouchableOpacity>
             </ScrollView>
-
         </SafeAreaView>
-     
     )
 }
 
 const styles = StyleSheet.create({
     navContainer: {
         width: '100%',
-        padding: '1%',
+        height: '20%',
         flexDirection: 'row',
-        borderColor: 'white',
-        borderRadius: 5,
-        borderWidth: 2,
+        borderTopColor: 'white',
+        borderTopWidth: 1,
+        borderBottomColor: 'white',
+        borderBottomWidth: 1,
         
     },
     
     navItem: {
-       
         width: 150,
+        height: '100%',
         alignItems: 'center',
+        justifyContent: 'center',
         borderRightColor: 'white',
         borderRightWidth: 1,
+        textTransform: 'none',
     }
 })

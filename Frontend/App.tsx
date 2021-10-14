@@ -37,11 +37,14 @@ import 'react-native-gesture-handler';
 
 // react-native page navigator imports => similar to react-router
 import {NavigationContainer} from '@react-navigation/native';
-import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import Home  from './pages/Home';
-import { FullStockView } from './pages/FullStockView';
-import { RootStackParamList,Routes } from './routes';
+import Home  from './pages/tabpages/Home';
+import { FullStockView } from './pages/stackpages/FullStockView';
+import { RootTabParamList,TabRoutes } from './routes';
 import { green } from '@mui/material/colors';
+import { Tab } from '@mui/material';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { SupportList } from './pages/tabpages/SupportList';
+import { Settings } from './pages/tabpages/Settings';
 
 
 const App = () => {
@@ -52,36 +55,25 @@ const App = () => {
   };
 
   // creating stack data structure to navigate between pages
-  const RootStack = createNativeStackNavigator<RootStackParamList>();
-  const navigationOptions: NativeStackNavigationOptions = {
-    title: 'Watchlist',
-    headerStyle: {
-      backgroundColor: 'black',
-    }
-,
-    headerTitleStyle: {
-      fontWeight: '700',
-      color: 'white',
-      fontSize: 28,
-    },
+  const RootTab = createBottomTabNavigator();
 
-    headerTitleAlign: 'left',
-    headerTintColor:'white',   
-  
-    
-   
-  }
   return (
     
         // Note: navigation container needs to be at top level to render => simple issue but causes problems
         <NavigationContainer>
-
+            
             {/* This is similar to creating a switch with react-router => it holds our different routes for our screens */}
-            <RootStack.Navigator initialRouteName={Routes.WatchList}>
-              <RootStack.Screen name={Routes.WatchList} component={Home} options={navigationOptions}></RootStack.Screen>
-              <RootStack.Screen name={Routes.FullStock} component={FullStockView} options={{title:'this is full stock view'}}></RootStack.Screen>
-            </RootStack.Navigator>
+            {/* <RootStack.Navigator initialRouteName={Routes.WatchList}>
+              <RootStack.Screen 
+                name={Routes.WatchList} component={Home}></RootStack.Screen>
+              <RootStack.Screen name={Routes.FullStock} component={FullStockView} options={navigationOptions}></RootStack.Screen>
+            </RootStack.Navigator> */}
+          <RootTab.Navigator>
+            <RootTab.Screen name={TabRoutes.WatchList} component={Home}/>
+            <RootTab.Screen name={TabRoutes.SupportedTickers} component={SupportList}/>
+            <RootTab.Screen name={TabRoutes.Settings} component={Settings}></RootTab.Screen>
 
+        </RootTab.Navigator>
         </NavigationContainer>
 
 

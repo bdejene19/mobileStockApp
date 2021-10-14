@@ -1,14 +1,19 @@
 import React, { FC, useState} from 'react';
-import {View, TextInput, StyleSheet, NativeSyntheticEvent, TextInputChangeEventData} from 'react-native';
+import {View, TextInput, StyleSheet, NativeSyntheticEvent, TextInputChangeEventData, FetchResult} from 'react-native';
 
 
 
 export const SearchBar: FC = () => {
+    const [searchResponse, setAPIResponse] = useState();
     const [query, setQuery] = useState("");
+    const handleChange = async (search: string) => {
+        let apiRes = await (await fetch(`https://api.twelvedata.com/stocks?symbol:${query}`)).json();
+        setAPIResponse(apiRes);
+    }
     return (
         <View style={styles.searchContainer}>
             {/* <SearchIcon style={{color: 'white'}}/> */}
-            <TextInput placeholder='Search' placeholderTextColor='white' value={query}  onChangeText={setQuery} style={styles.inputSearch}></TextInput>
+            <TextInput placeholder='Search' placeholderTextColor='white' value={query} onChange={() => handleChange(query)} onChangeText={setQuery} style={styles.inputSearch}></TextInput>
         </View>
         
     )

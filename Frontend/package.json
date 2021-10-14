@@ -19,6 +19,7 @@
     "@mui/icons-material": "^5.0.1",
     "@mui/material": "^5.0.1",
     "@react-native-community/masked-view": "^0.1.11",
+    "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.4",
     "@react-navigation/native-stack": "^6.2.2",
     "finnhub": "^1.2.7",

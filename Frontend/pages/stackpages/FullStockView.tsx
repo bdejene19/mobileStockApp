@@ -1,11 +1,11 @@
 import React, {FC, useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
-import { StockProps } from '../components/StockPreview';
+import { StockProps } from '../../components/StockPreview';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {faAlignJustify, faCaretUp} from '@fortawesome/free-solid-svg-icons'
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList, Routes} from '../routes';
-import { ScrollGraphNav } from '../components/ScrollGraphNav';
+import {RootTabParamList, TabRoutes} from '../../routes';
+import { ScrollGraphNav } from '../../components/ScrollGraphNav';
 import { useNavigation } from '@react-navigation/core';
 
 
@@ -18,7 +18,7 @@ interface StockContent {
     dayPercentMove: number,
 }
 
-type fullStockProps = NativeStackScreenProps<RootStackParamList, Routes.FullStock>;
+type fullStockProps = NativeStackScreenProps<RootTabParamList, TabRoutes.SupportedTickers>;
 
 
 export const FullStockView: FC<StockContent> = (props) => {
@@ -63,7 +63,7 @@ export const FullStockView: FC<StockContent> = (props) => {
 
 const styles = StyleSheet.create({
     headWrap: {
-        backgroundColor: 'slateblue',
+        backgroundColor: 'black',
 
 
     },
