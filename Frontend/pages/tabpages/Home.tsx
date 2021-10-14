@@ -14,7 +14,7 @@ import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
 
 // defining screen type => takes 2 params: our list of pages, then the name of the current route;
-type homeScreenProps = NativeStackScreenProps<RootStackParamList, StackRoutes.specificStock>;
+type homeScreenProps = NativeStackScreenProps<RootStackParamList, StackRoutes.WatchList>;
 
 const navigationOptions: NativeStackNavigationOptions = {
     title: 'Watchlist',
@@ -40,16 +40,17 @@ const HomePage: FC<homeScreenProps> = ({navigation}) => {
 
     return (
         <View style={styles.homePageContainer}>
+            <Text>Test</Text>
                 <SearchBar></SearchBar>
                 <StockPreview ticker='NKE' companyName="nike"  stockValue={1} dayPercentMove={3} bgColor='green'></StockPreview>
-                    <Button title='test Nav' onPress={() => navigation.navigate(StackRoutes.specificStock)}></Button>
+                    <Button title='test Nav' onPress={() => navigation.navigate(StackRoutes.FullStock)}></Button>
         </View> 
 
     )
 }
 
 const Home: FC = () => {
-    const RootStack = createNativeStackNavigator<RootTabParamList>();
+    const RootStack = createNativeStackNavigator<RootStackParamList>();
     let socket = useRef<null | WebSocket>(null);
     // useEffect(() => {
     //     fetch('http://localhost:8000/fullStock').then(res => res.json()).then(data => console.log(data)).catch(err => console.log('there was an error'))
@@ -112,10 +113,10 @@ const Home: FC = () => {
         //     <RootTab.Screen name={Routes.FullStock} component={FullStockView}/>
 
         // </RootTab.Navigator>
-        <RootStack.Navigator initialRouteName={TabRoutes.WatchList}>
+        <RootStack.Navigator initialRouteName={StackRoutes.WatchList}>
               <RootStack.Screen 
-                name={TabRoutes.WatchList} component={HomePage} options={navigationOptions}></RootStack.Screen>
-              {/* <RootStack.Screen name={TabRoutes.FullStock} component={FullStockView}></RootStack.Screen> */}
+                name={StackRoutes.WatchList} component={HomePage} options={navigationOptions}></RootStack.Screen>
+              <RootStack.Screen name={StackRoutes.FullStock} component={FullStockView}></RootStack.Screen>
         </RootStack.Navigator> 
     )
 }

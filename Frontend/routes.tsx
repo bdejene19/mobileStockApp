@@ -5,7 +5,7 @@ import { NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 
 export enum TabRoutes {
-    WatchList = 'Home',
+    Home = 'Home',
     SupportedTickers = 'Supported Tickers',
     Settings = 'Setting'
 }
@@ -13,18 +13,20 @@ export enum TabRoutes {
 // for typescript => need to create an interface since create "createStackNavigataor()" accepts a type argument
 // type argument describes interface where keys are the "screen names" and the VALUES are the params (props?) required in each screen
 export type RootTabParamList = {
-    [TabRoutes.WatchList]: undefined; // home screen does not require any navigation params
+    [TabRoutes.Home]: undefined; // home screen does not require any navigation params
     [TabRoutes.SupportedTickers]: undefined; 
     [TabRoutes.Settings]: undefined;
 };
 
 
 export enum StackRoutes { 
-    specificStock = 'Full Stock'
+    WatchList = 'Watchlist',
+    FullStock = 'Full Stock',
 }
 
 export type RootStackParamList = {
-    [StackRoutes.specificStock]: undefined,
+    [StackRoutes.WatchList]: undefined,
+    [StackRoutes.FullStock]: undefined,
 }
 
 

@@ -69,7 +69,7 @@ const App = () => {
               <RootStack.Screen name={Routes.FullStock} component={FullStockView} options={navigationOptions}></RootStack.Screen>
             </RootStack.Navigator> */}
           <RootTab.Navigator>
-            <RootTab.Screen name={TabRoutes.WatchList} component={Home}/>
+            <RootTab.Screen name={TabRoutes.Home} component={Home}/>
             <RootTab.Screen name={TabRoutes.SupportedTickers} component={SupportList}/>
             <RootTab.Screen name={TabRoutes.Settings} component={Settings}></RootTab.Screen>
 

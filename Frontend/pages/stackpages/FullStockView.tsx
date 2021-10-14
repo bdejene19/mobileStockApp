@@ -4,7 +4,7 @@ import { StockProps } from '../../components/StockPreview';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {faAlignJustify, faCaretUp} from '@fortawesome/free-solid-svg-icons'
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootTabParamList, TabRoutes} from '../../routes';
+import {RootStackParamList, RootTabParamList, StackRoutes, TabRoutes} from '../../routes';
 import { ScrollGraphNav } from '../../components/ScrollGraphNav';
 import { useNavigation } from '@react-navigation/core';
 
@@ -18,7 +18,7 @@ interface StockContent {
     dayPercentMove: number,
 }
 
-type fullStockProps = NativeStackScreenProps<RootTabParamList, TabRoutes.SupportedTickers>;
+type fullStockProps = NativeStackScreenProps<RootStackParamList, StackRoutes.FullStock>;
 
 
 export const FullStockView: FC<StockContent> = (props) => {
