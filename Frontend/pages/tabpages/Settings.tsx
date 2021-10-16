@@ -1,5 +1,5 @@
 import React, {FC} from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 
 export const Settings: FC = () => {
     return (
@@ -8,3 +8,9 @@ export const Settings: FC = () => {
         </View>
     )
 }
+
+
+const styles = StyleSheet.create({
+    
+
+})

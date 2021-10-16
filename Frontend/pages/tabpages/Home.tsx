@@ -36,14 +36,16 @@ const navigationOptions: NativeStackNavigationOptions = {
     
    
 }
+
+// homepage component is a screen. this is defined through its type
+// pass navigation deconstruction to allow navigation to separate pages
 const HomePage: FC<homeScreenProps> = ({navigation}) => {
 
     return (
         <View style={styles.homePageContainer}>
-            <Text>Test</Text>
-                <SearchBar></SearchBar>
-                <StockPreview ticker='NKE' companyName="nike"  stockValue={1} dayPercentMove={3} bgColor='green'></StockPreview>
-                    <Button title='test Nav' onPress={() => navigation.navigate(StackRoutes.FullStock)}></Button>
+            <SearchBar></SearchBar>
+            <StockPreview ticker='NKE' companyName="nike"  stockValue={1} dayPercentMove={3} bgColor='green'></StockPreview>
+            <Button title='test Nav' onPress={() => navigation.navigate(StackRoutes.FullStock)}></Button>
         </View> 
 
     )
@@ -108,11 +110,6 @@ const Home: FC = () => {
     })
 
     return (
-        // <RootTab.Navigator>
-        //     <RootTab.Screen name={Routes.WatchList} component={HomePage}/>
-        //     <RootTab.Screen name={Routes.FullStock} component={FullStockView}/>
-
-        // </RootTab.Navigator>
         <RootStack.Navigator initialRouteName={StackRoutes.WatchList}>
               <RootStack.Screen 
                 name={StackRoutes.WatchList} component={HomePage} options={navigationOptions}></RootStack.Screen>

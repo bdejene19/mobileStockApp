@@ -42,7 +42,7 @@ import { FullStockView } from './pages/stackpages/FullStockView';
 import { RootTabParamList,TabRoutes } from './routes';
 import { green } from '@mui/material/colors';
 import { Tab } from '@mui/material';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SupportList } from './pages/tabpages/SupportList';
 import { Settings } from './pages/tabpages/Settings';
 
@@ -56,19 +56,22 @@ const App = () => {
 
   // creating stack data structure to navigate between pages
   const RootTab = createBottomTabNavigator();
+  const screenOptions: BottomTabNavigationOptions = {
+      tabBarStyle: {
+        backgroundColor: 'orangered'
+      },
+      headerBackgroundContainerStyle: {
+      }
+
+  }
 
   return (
     
         // Note: navigation container needs to be at top level to render => simple issue but causes problems
         <NavigationContainer>
-            
-            {/* This is similar to creating a switch with react-router => it holds our different routes for our screens */}
-            {/* <RootStack.Navigator initialRouteName={Routes.WatchList}>
-              <RootStack.Screen 
-                name={Routes.WatchList} component={Home}></RootStack.Screen>
-              <RootStack.Screen name={Routes.FullStock} component={FullStockView} options={navigationOptions}></RootStack.Screen>
-            </RootStack.Navigator> */}
-          <RootTab.Navigator>
+
+          {/* This is similar to creating a switch with react-router => it holds our different routes for our screens */}
+          <RootTab.Navigator screenOptions={screenOptions}>
             <RootTab.Screen name={TabRoutes.Home} component={Home}/>
             <RootTab.Screen name={TabRoutes.SupportedTickers} component={SupportList}/>
             <RootTab.Screen name={TabRoutes.Settings} component={Settings}></RootTab.Screen>
