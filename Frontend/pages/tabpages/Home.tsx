@@ -9,6 +9,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FullStockView } from '../stackpages/FullStockView';
 import { createNativeStackNavigator} from '@react-navigation/native-stack';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { GlobalStyles } from './Settings';
 
 
 
@@ -42,7 +43,7 @@ const navigationOptions: NativeStackNavigationOptions = {
 const HomePage: FC<homeScreenProps> = ({navigation}) => {
 
     return (
-        <View style={styles.homePageContainer}>
+        <View style={GlobalStyles.screenBgColor}>
             <SearchBar></SearchBar>
             <StockPreview ticker='NKE' companyName="nike"  stockValue={1} dayPercentMove={3} bgColor='green'></StockPreview>
             <Button title='test Nav' onPress={() => navigation.navigate(StackRoutes.FullStock)}></Button>

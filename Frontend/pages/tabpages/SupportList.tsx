@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     },
 
     learnMore: {
-        backgroundColor: 'darkgrey',
+        backgroundColor: 'snow',
         color: 'orange',
         fontSize: 20,
         height: '10%',

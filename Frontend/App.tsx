@@ -60,11 +60,19 @@ const App = () => {
   const screenOptions: BottomTabNavigationOptions = {
     tabBarStyle: {
       backgroundColor: 'orangered'
+    }, 
+    tabBarInactiveTintColor: 'black', 
+    tabBarActiveTintColor: 'white', 
+    headerStyle: { 
+      backgroundColor: 'black'
+    }, 
+    headerTitleStyle: {
+      backgroundColor: 'black',
+      color: 'white',
+      fontSize: 24,
+      fontWeight: '700',
+  
     },
-    headerBackgroundContainerStyle: {
-    },
-    tabBarInactiveTintColor: 'black',
-    tabBarActiveTintColor: 'white',
   }
 
   const handleTabIcon = (iconFocus: boolean, route: string) => {
@@ -84,7 +92,6 @@ const App = () => {
           {/* This is similar to creating a switch with react-router => it holds our different routes for our screens */}
           <RootTab.Navigator screenOptions={({route}) => ({tabBarIcon: ({focused, size, color}) => {
             let inactive = 'black';
-
             if (focused) {
               inactive = 'white';
             } else {
@@ -100,7 +107,7 @@ const App = () => {
               iconComponent = faCog;
             }
             return <FontAwesomeIcon icon={iconComponent} color={inactive}/> ;
-          }, tabBarStyle: {backgroundColor: 'orangered'}, tabBarInactiveTintColor: 'black', tabBarActiveTintColor: 'white'})}>
+          }, ...screenOptions})}>
             <RootTab.Screen name={TabRoutes.Home} component={Home} options={{tabBarAllowFontScaling: true}}/>
             <RootTab.Screen name={TabRoutes.SupportedTickers} component={SupportList} options={{tabBarAllowFontScaling: true}}/>
             <RootTab.Screen name={TabRoutes.Settings} component={Settings} options={{tabBarAllowFontScaling: true}}/>
