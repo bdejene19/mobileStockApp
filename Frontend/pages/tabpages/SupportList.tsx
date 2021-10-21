@@ -1,5 +1,5 @@
 import React, {FC} from 'react'
-import { View, Text, StyleSheet, SectionList, Linking} from 'react-native';
+import { View, Text, StyleSheet, SectionList, Linking, Button} from 'react-native';
 
 export const SupportList: FC = () => {
     return (
@@ -7,7 +7,7 @@ export const SupportList: FC = () => {
             <View  style={styles.screenContainer}>
                 <Text style={styles.contentText}>Due to TwelveData's free API tier, not all tickers are available for live-streaming data.</Text>
                 <Text style={[styles.contentText, {paddingTop: '5%'}]}>Here is a supported list of tickers:</Text>
-                <SectionList scrollEnabled={false} style={{borderColor: 'green', borderWidth: 1, maxHeight: '45%', minHeight: '45%', height: '50%',}} sections={supportedTickers} renderItem={({item}) => <BulletPoints listItem={item}></BulletPoints>} renderSectionHeader={({section: data}) => {
+                <SectionList scrollEnabled={false} style={{ maxHeight: '45%', minHeight: '45%',}} sections={supportedTickers} renderItem={({item}) => <BulletPoints listItem={item}></BulletPoints>} renderSectionHeader={({section: data}) => {
                     return (
                         <View>
                             <Text style={styles.sectionHeader}>{data.title}</Text>
@@ -16,8 +16,12 @@ export const SupportList: FC = () => {
 
                     )}}>
                 </SectionList>
-                <Text style={styles.contentText}>For a more comprehensive list that TwelveData's free tier offers, visit:</Text>
-                <Text onPress={() => Linking.openURL('https://support.twelvedata.com/en/articles/5335783-trial')} style={styles.learnMore}>Learn More</Text>
+                <Text style={[styles.contentText, {paddingBottom: '5%'}]}>For a more comprehensive list that TwelveData's free tier offers, visit:</Text>
+                <View style={styles.learnMore}>
+                    <Button onPress={() => Linking.openURL('https://support.twelvedata.com/en/articles/5335783-trial')} title='Learn More'></Button>
+
+
+                </View>
                 
 
             </View>
@@ -90,10 +94,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'darkgrey',
         color: 'orange',
         fontSize: 20,
-        textAlign: 'center',
         height: '10%',
-        borderRadius: 5,
-        textAlignVertical: 'center',
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+   
     }
 })
 
