@@ -7,7 +7,7 @@ import React from 'react';
 export enum TabRoutes {
     Home = 'Home',
     SupportedTickers = 'Supported Tickers',
-    Settings = 'Setting'
+    Settings = 'Settings'
 }
 
 // for typescript => need to create an interface since create "createStackNavigataor()" accepts a type argument

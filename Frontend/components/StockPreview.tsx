@@ -1,8 +1,9 @@
+import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/core";
-import React, {FC, useState} from "react";
+import React, {FC, ReactNode, useState} from "react";
 import {View, StyleSheet, Text,} from 'react-native';
-import { TouchableOpacity } from "react-native-gesture-handler";
-import {Routes} from '../routes';
+import { TouchableOpacity, Swipeable } from "react-native-gesture-handler";
 
 export interface StockProps {
     ticker: string,
@@ -12,26 +13,34 @@ export interface StockProps {
     bgColor?: string,
 }
 
+
+
 export const StockPreview: FC<StockProps> = (props) => {
+
+    const deleteButton: ReactNode =    <TouchableOpacity style={styles.deleteWrapper}>
+                                        <FontAwesomeIcon icon={faMinusCircle} size={30} style={{color: 'white'}}/>
+                                    </TouchableOpacity>
     return (
-        <TouchableOpacity style={styles.container} onPress={() => console.log('button pressed')}>
-            <View style={styles.companyNameWrapper}>
-                <Text style={styles.header}>{props.ticker}</Text>
-                <Text style={styles.subHeader}>{props.companyName}</Text>
+        <Swipeable renderRightActions={() => deleteButton}>
+            <TouchableOpacity style={styles.container} onPress={() => console.log('button pressed')}>
+                <View style={styles.companyNameWrapper}>
+                    <Text style={styles.header}>{props.ticker}</Text>
+                    <Text style={styles.subHeader}>{props.companyName}</Text>
 
-            </View>
-
-            <View style={styles.dayGraph}>
-            </View>
-            
-            <View style={styles.numbersContainer}>
-                <Text style={styles.stockPrice}>{props.stockValue}</Text>
-                <View style={styles.dependentBG}>
-                    <Text>{props.dayPercentMove}%</Text>
                 </View>
-            </View>
 
-        </TouchableOpacity>
+                <View style={styles.dayGraph}>
+                </View>
+                
+                <View style={styles.numbersContainer}>
+                    <Text style={styles.stockPrice}>{props.stockValue}</Text>
+                    <View style={styles.dependentBG}>
+                        <Text>{props.dayPercentMove}%</Text>
+                    </View>
+                </View>
+
+            </TouchableOpacity>
+        </Swipeable>
     );
 };
 
@@ -105,6 +114,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 5,
         
+    }, 
+
+    deleteWrapper: {
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        // width: '40%',
+        padding: '5%',
     }
     
 })

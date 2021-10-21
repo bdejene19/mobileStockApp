@@ -79,12 +79,12 @@ const Home: FC = () => {
             // for my api usage
             // fetch('https://api.twelvedata.com/api_usage?apikey=6ca188086bb74ba88ddaa94c9d184322').then(res => console.log(res.json()))
 
-            // ws.send(`{
-            //     "action": "subscribe", 
-            //     "params": {
-            //         "symbols": "AAPL",
-            //     }
-            //   }`)
+            ws.send(`{
+                "action": "subscribe", 
+                "params": {
+                    "symbols": "AAPL",
+                }
+              }`)
             // ws.send('why wont this take a a message to the server');
             // fetch('https://api.twelvedata.com/stocks?symbol:NYSE').then(res => res.json()).then(res => console.log(res)).catch(e => console.log())
         } ;
@@ -97,6 +97,7 @@ const Home: FC = () => {
                 volume: stockObject.day_volume,
                 exchange: stockObject.exchange,    
             }
+            console.log(msg.data);
 
             setapple(returnedObject.currPrice);
 
