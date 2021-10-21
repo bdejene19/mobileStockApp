@@ -38,13 +38,14 @@ import 'react-native-gesture-handler';
 // react-native page navigator imports => similar to react-router
 import {NavigationContainer} from '@react-navigation/native';
 import Home  from './pages/tabpages/Home';
-import { FullStockView } from './pages/stackpages/FullStockView';
 import { RootTabParamList,TabRoutes } from './routes';
-import { green } from '@mui/material/colors';
-import { Tab } from '@mui/material';
+import { faHome, faCog, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SupportList } from './pages/tabpages/SupportList';
 import { Settings } from './pages/tabpages/Settings';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { JSXElement } from '@babel/types';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 
 const App = () => {
@@ -57,12 +58,22 @@ const App = () => {
   // creating stack data structure to navigate between pages
   const RootTab = createBottomTabNavigator();
   const screenOptions: BottomTabNavigationOptions = {
-      tabBarStyle: {
-        backgroundColor: 'orangered'
-      },
-      headerBackgroundContainerStyle: {
-      }
+    tabBarStyle: {
+      backgroundColor: 'orangered'
+    },
+    headerBackgroundContainerStyle: {
+    },
+    tabBarInactiveTintColor: 'black',
+    tabBarActiveTintColor: 'white',
+  }
 
+  const handleTabIcon = (iconFocus: boolean, route: string) => {
+    let iconColor = '';
+    if (iconFocus) {
+      iconColor="white";
+    } else {
+      iconColor='black'
+    }
   }
 
   return (
@@ -71,11 +82,28 @@ const App = () => {
         <NavigationContainer>
 
           {/* This is similar to creating a switch with react-router => it holds our different routes for our screens */}
-          <RootTab.Navigator screenOptions={screenOptions}>
-            <RootTab.Screen name={TabRoutes.Home} component={Home}/>
-            <RootTab.Screen name={TabRoutes.SupportedTickers} component={SupportList}/>
-            <RootTab.Screen name={TabRoutes.Settings} component={Settings}></RootTab.Screen>
+          <RootTab.Navigator screenOptions={({route}) => ({tabBarIcon: ({focused, size, color}) => {
+            let inactive = 'black';
 
+            if (focused) {
+              inactive = 'white';
+            } else {
+              inactive = 'black';
+            }
+
+            let iconComponent: IconProp = faHome;
+            if (route.name === 'Home') {
+              iconComponent = faHome;
+            } else if (route.name === 'Supported Tickers') {
+              iconComponent = faInfoCircle;
+            } else if (route.name === 'Settings') {
+              iconComponent = faCog;
+            }
+            return <FontAwesomeIcon icon={iconComponent} color={inactive}/> ;
+          }, tabBarStyle: {backgroundColor: 'orangered'}, tabBarInactiveTintColor: 'black', tabBarActiveTintColor: 'white'})}>
+            <RootTab.Screen name={TabRoutes.Home} component={Home} options={{tabBarAllowFontScaling: true}}/>
+            <RootTab.Screen name={TabRoutes.SupportedTickers} component={SupportList} options={{tabBarAllowFontScaling: true}}/>
+            <RootTab.Screen name={TabRoutes.Settings} component={Settings} options={{tabBarAllowFontScaling: true}}/>
         </RootTab.Navigator>
         </NavigationContainer>
 
