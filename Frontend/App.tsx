@@ -25,122 +25,48 @@ import {
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-import 'react-native-gesture-handler';
-
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import Main from './pages/Main';
+import store from './reduxPath/store'
 // react-native page navigator imports => similar to react-router
-import {NavigationContainer} from '@react-navigation/native';
-import Home  from './pages/tabpages/Home';
-import { RootTabParamList,TabRoutes } from './routes';
-import { faHome, faCog, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SupportList } from './pages/tabpages/SupportList';
-import { Settings } from './pages/tabpages/Settings';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { JSXElement } from '@babel/types';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+
+// redux notes:
+/**
+ * store => holds state
+ * dispatcher => someone who sends an action ==> i.e. dispatching an action
+ * action => state can be modified by actions (which are simple objects);
+ * reducer => receives the action and modifies state to give updated state ==> reducer is a:
+ *  - pure function
+ *  - only mandatory argument is the 'type',
+ * subscriber => listens for the state change to update UI
+ */
+
+
+
+// const initialState = {
+//   currentPrice: 0,
+//   darkMode: true,
+//   largeText: false,
+// } 
+
+// creating redux store => but requires a reducer to be created
+// pass intiial state as first argument
+// const reducer = (state = initialState) => {
+//   return state;
+// }
 
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  // creating stack data structure to navigate between pages
-  const RootTab = createBottomTabNavigator();
-  const screenOptions: BottomTabNavigationOptions = {
-    tabBarStyle: {
-      backgroundColor: 'orangered'
-    }, 
-    tabBarInactiveTintColor: 'black', 
-    tabBarActiveTintColor: 'white', 
-    headerStyle: { 
-      backgroundColor: 'black'
-    }, 
-    headerTitleStyle: {
-      backgroundColor: 'black',
-      color: 'white',
-      fontSize: 24,
-      fontWeight: '700',
-  
-    },
-  }
-
-  const handleTabIcon = (iconFocus: boolean, route: string) => {
-    let iconColor = '';
-    if (iconFocus) {
-      iconColor="white";
-    } else {
-      iconColor='black'
-    }
-  }
 
   return (
-    
-        // Note: navigation container needs to be at top level to render => simple issue but causes problems
-        <NavigationContainer>
-
-          {/* This is similar to creating a switch with react-router => it holds our different routes for our screens */}
-          <RootTab.Navigator screenOptions={({route}) => ({tabBarIcon: ({focused, size, color}) => {
-            let inactive = 'black';
-            if (focused) {
-              inactive = 'white';
-            } else {
-              inactive = 'black';
-            }
-
-            let iconComponent: IconProp = faHome;
-            if (route.name === 'Home') {
-              iconComponent = faHome;
-            } else if (route.name === 'Supported Tickers') {
-              iconComponent = faInfoCircle;
-            } else if (route.name === 'Settings') {
-              iconComponent = faCog;
-            }
-            return <FontAwesomeIcon icon={iconComponent} color={inactive}/> ;
-          }, ...screenOptions})}>
-            <RootTab.Screen name={TabRoutes.Home} component={Home} options={{tabBarAllowFontScaling: true}}/>
-            <RootTab.Screen name={TabRoutes.SupportedTickers} component={SupportList} options={{tabBarAllowFontScaling: true}}/>
-            <RootTab.Screen name={TabRoutes.Settings} component={Settings} options={{tabBarAllowFontScaling: true}}/>
-        </RootTab.Navigator>
-        </NavigationContainer>
-
-
-
-
+    // react-redux provider => state is now accessible throughout the app
+    <Provider store={store}> 
+      {/* app contents */}
+      <Main></Main>
+    </Provider>
   );
 };
-
-const styles = StyleSheet.create({
-  globalWrapper: {
-    margin: '3%',
-    top: '5%',
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
