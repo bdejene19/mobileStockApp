@@ -1,10 +1,11 @@
 import React, {FC} from 'react'
 import { View, Text, StyleSheet, SectionList, Linking, Button} from 'react-native';
+import { GlobalStyles } from './Settings';
 
 export const SupportList: FC = () => {
     return (
         // <ScrollView style={styles.screenContainer}>
-            <View  style={styles.screenContainer}>
+            <View  style={GlobalStyles.screenBgColor}>
                 <Text style={styles.contentText}>Due to TwelveData's free API tier, not all tickers are available for live-streaming data.</Text>
                 <Text style={[styles.contentText, {paddingTop: '5%'}]}>Here is a supported list of tickers:</Text>
                 <SectionList scrollEnabled={false} style={{ maxHeight: '45%', minHeight: '45%',}} sections={supportedTickers} renderItem={({item}) => <BulletPoints listItem={item}></BulletPoints>} renderSectionHeader={({section: data}) => {
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
 
     bullet: {
         color: 'white',
-        fontSize: 10,
+        fontSize: 8,
         alignSelf: 'center',
         paddingRight: '2%',
 

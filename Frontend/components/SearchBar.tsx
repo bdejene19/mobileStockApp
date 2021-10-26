@@ -11,7 +11,7 @@ export const SearchBar: FC = () => {
         setAPIResponse(apiRes);
     }
     return (
-        <View style={styles.searchContainer}>
+        <View style={[styles.searchContainer, {marginTop: '0%', marginBottom: '2%'}]}>
             {/* <SearchIcon style={{color: 'white'}}/> */}
             <TextInput placeholder='Search' placeholderTextColor='white' value={query} onChange={() => handleChange(query)} onChangeText={setQuery} style={styles.inputSearch}></TextInput>
         </View>
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
         padding: '2%',
         alignSelf:'center',
         borderColor: 'white',
-        marginTop: '5%',
         borderRadius: 10,
         borderWidth: 2,
         flexDirection: 'row',

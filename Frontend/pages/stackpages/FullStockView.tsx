@@ -7,6 +7,8 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList, RootTabParamList, StackRoutes, TabRoutes} from '../../routes';
 import { ScrollGraphNav } from '../../components/ScrollGraphNav';
 import { useNavigation } from '@react-navigation/core';
+import { GlobalStyles } from '../tabpages/Settings';
+import { connect } from 'react-redux';
 
 
 interface StockContent {
@@ -21,7 +23,7 @@ interface StockContent {
 type fullStockProps = NativeStackScreenProps<RootStackParamList, StackRoutes.FullStock>;
 
 
-export const FullStockView: FC<StockContent> = (props) => {
+const FullStockView: FC<StockContent> = (props) => {
     const [isGreen, setIsGreen] = useState<string>('black');
     const [arrowDirection, setArrowDirection] = useState()
 
@@ -36,7 +38,7 @@ export const FullStockView: FC<StockContent> = (props) => {
     }, [    ])
 
     return (
-        <View style={styles.headWrap}>
+        <View style={GlobalStyles.screenBgColor}>
             <View style={styles.headContainer}>
                 <View style={styles.nav}>
                     {/* <FontAwesomeIcon icon={ faCoffee }/> */}
@@ -59,6 +61,14 @@ export const FullStockView: FC<StockContent> = (props) => {
         </View>
     )
 }
+
+const mapStateToProps = (state: StockContent) => {
+    return {
+        currentPrice: state.currentPrice,
+    }
+}
+
+export default connect(mapStateToProps)(FullStockView);
 
 
 const styles = StyleSheet.create({

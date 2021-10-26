@@ -6,7 +6,7 @@ import { RootTabParamList, TabRoutes, StackRoutes, RootStackParamList } from '..
 import {useNavigation} from '@react-navigation/native';
 import { NativeStackScreenProps} from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { FullStockView } from '../stackpages/FullStockView';
+import  FullStockView  from '../stackpages/FullStockView';
 import { createNativeStackNavigator} from '@react-navigation/native-stack';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { GlobalStyles } from './Settings';
@@ -18,11 +18,11 @@ import { GlobalStyles } from './Settings';
 type homeScreenProps = NativeStackScreenProps<RootStackParamList, StackRoutes.WatchList>;
 
 const navigationOptions: NativeStackNavigationOptions = {
-    title: 'Watchlist',
     headerStyle: {
       backgroundColor: 'black',
-    }
-,
+    },
+
+    headerShadowVisible: false,
     headerTitleStyle: {
       fontWeight: '700',
       color: 'white',
@@ -72,7 +72,6 @@ const Home: FC = () => {
 
         
         
-        console.log
         ws.onopen = () => {
             console.log('connected')
             // HOOOORAY! this code ws.send is getting real time feed back from server => however, need to figure out how to subscrobe to multiple channels
@@ -81,12 +80,11 @@ const Home: FC = () => {
             // fetch('https://api.twelvedata.com/api_usage?apikey=6ca188086bb74ba88ddaa94c9d184322').then(res => console.log(res.json()))
 
             ws.send(`{
-                "action": "subscribe", 
+                "action": "unsubscribe", 
                 "params": {
                     "symbols": "AAPL",
                 }
               }`)
-            // ws.send('why wont this take a a message to the server');
             // fetch('https://api.twelvedata.com/stocks?symbol:NYSE').then(res => res.json()).then(res => console.log(res)).catch(e => console.log())
         } ;
 
@@ -99,23 +97,22 @@ const Home: FC = () => {
                 exchange: stockObject.exchange,    
             }
             console.log(msg.data);
-
             setapple(returnedObject.currPrice);
 
         };
 
         ws.onclose = () => console.log(ws.readyState);
 
-        ws.onerror = e => console.log(e);
+        ws.onerror = e => console.log('my error: ', e);
         // ws.close();
 
     })
 
     return (
-        <RootStack.Navigator initialRouteName={StackRoutes.WatchList}>
-              <RootStack.Screen 
-                name={StackRoutes.WatchList} component={HomePage} options={navigationOptions}></RootStack.Screen>
-              <RootStack.Screen name={StackRoutes.FullStock} component={FullStockView}></RootStack.Screen>
+        <RootStack.Navigator initialRouteName={StackRoutes.WatchList} screenOptions={{headerShown: false}}>
+            <RootStack.Screen 
+            name={StackRoutes.WatchList} component={HomePage} options={navigationOptions}></RootStack.Screen>
+            <RootStack.Screen name={StackRoutes.FullStock} component={FullStockView}></RootStack.Screen>
         </RootStack.Navigator> 
     )
 }

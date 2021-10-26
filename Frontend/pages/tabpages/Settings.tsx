@@ -1,9 +1,15 @@
 import React, {FC, useEffect, useState} from 'react'
-import { View, Text, StyleSheet, Switch} from 'react-native'
-let bblack: string = ""
-export const Settings: FC = () => {
-    const [darkMode, setDarkMode] = useState<boolean>(true);
-    const [largeText, setLargeText] = useState<boolean>(false);
+import { View, Text, StyleSheet, Switch} from 'react-native';
+import { toggleDarkMode, toggleLargeText } from '../../reduxPath/actions';
+import {connect} from 'react-redux'
+
+interface settingsProps {
+    darkTheme: boolean ,
+    largeTextTheme: boolean,
+}
+const Settings: FC<settingsProps> = ({darkTheme = true, largeTextTheme }) => {
+    const [darkMode, setDarkMode] = useState<boolean>(darkTheme);
+    const [largeText, setLargeText] = useState<boolean>(largeTextTheme);
 
     // NEED to figure out how to pass the state of settings through the rest of app
     // Should I call GlobalStyles at top level in App.tsx file => however, that doesn't stop the fact I need to access state 
@@ -31,11 +37,30 @@ export const Settings: FC = () => {
     )
 }
 
+// mapStateToProps => used for connecting necessary data from store into component
+/**
+ *  Takes in 2 parameters => 1) state (the entire redux store - however,calling it store would be 'incorrect' since it is a state value)
+ *  the Second parameter is ownProps (optional) -> used if a component requires its own props to retrieve data from the store
+ * 
+ * NOTE: mapStateToProps => return a plain object that contains the data the component needs
+ * 
+ */
+//  const mapStateToProps = (state: settingsProps) => {
+//     let { settings } = state;
+//     console.log(settings);
+//     return {
+//         settings
+//     }
+    
+// }
+
+export default connect(null, { toggleDarkMode, toggleLargeText}, )(Settings);
+
 export const GlobalStyles = StyleSheet.create({
     screenBgColor: {
         backgroundColor: 'black',
         height: '100%',
-        padding: '5%',
+        padding: '2%',
     },
     
     mainScreenHeaderTitle: {
