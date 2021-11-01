@@ -3,4 +3,8 @@
 
 import { combineReducers } from "redux";
 import toggles from "./toggles";
-export default combineReducers({toggles});
+
+const rootReducer = combineReducers({
+    toggleSwitches: toggles
+});
+export default rootReducer;

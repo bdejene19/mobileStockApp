@@ -1,15 +1,23 @@
 import React, {FC, useEffect, useState} from 'react'
 import { View, Text, StyleSheet, Switch} from 'react-native';
 import { toggleDarkMode, toggleLargeText } from '../../reduxPath/actions';
-import {connect} from 'react-redux'
+import {connect, useSelector, useDispatch} from 'react-redux'
+import { toggleStates } from '../../reduxPath/reducers/toggles';
 
 interface settingsProps {
     darkTheme: boolean ,
     largeTextTheme: boolean,
 }
-const Settings: FC<settingsProps> = ({darkTheme = true, largeTextTheme }) => {
-    const [darkMode, setDarkMode] = useState<boolean>(darkTheme);
-    const [largeText, setLargeText] = useState<boolean>(largeTextTheme);
+
+// note: for my props type => it needs to extend the types for my states from redux, my dispatch types, and other types for the component itself
+/** e.g. interface Props extends ReduxStateProps, DispactActionProps
+ * - the interface for Props is where you would put your component specific types
+ * 
+ */
+const Settings: FC<toggleStates> = (props: toggleStates) => {
+    // const [darkMode, setDarkMode] = useState<boolean>(darkTheme);
+    // const [largeText, setLargeText] = useState<boolean>(largeTextTheme);
+
 
     // NEED to figure out how to pass the state of settings through the rest of app
     // Should I call GlobalStyles at top level in App.tsx file => however, that doesn't stop the fact I need to access state 
@@ -23,14 +31,14 @@ const Settings: FC<settingsProps> = ({darkTheme = true, largeTextTheme }) => {
             <View style={GlobalStyles.switchContainer}>
                 <Text style={[GlobalStyles.contentText]}>Dark Mode</Text>
                 <View style={GlobalStyles.toggle}>
-                    <Switch value={darkMode} onValueChange={(value) => setDarkMode(value)} trackColor={{true: 'lime'}} ios_backgroundColor='white'></Switch>
+                    <Switch value={props.isDark} onValueChange={(value) => console.log(value)} trackColor={{true: 'lime'}} ios_backgroundColor='white'></Switch>
                 </View>
             </View>
 
             <View style={GlobalStyles.switchContainer}>
                 <Text style={[GlobalStyles.contentText]}>Large Text</Text>
                 <View style={GlobalStyles.toggle}>
-                    <Switch value={largeText} onValueChange={(value) => setLargeText(value)} trackColor={{true: 'lime'}} ios_backgroundColor='white'></Switch>
+                    <Switch value={props.isLarge} onValueChange={(value) => console.log(value)} trackColor={{true: 'lime'}} ios_backgroundColor='white'></Switch>
                 </View>
             </View>
         </View>
@@ -45,16 +53,17 @@ const Settings: FC<settingsProps> = ({darkTheme = true, largeTextTheme }) => {
  * NOTE: mapStateToProps => return a plain object that contains the data the component needs
  * 
  */
-//  const mapStateToProps = (state: settingsProps) => {
-//     let { settings } = state;
-//     console.log(settings);
-//     return {
-//         settings
-//     }
-    
-// }
+ const mapStateToProps = (state: any): toggleStates => {
+     let {toggleSwitches} = state;
 
-export default connect(null, { toggleDarkMode, toggleLargeText}, )(Settings);
+    return toggleSwitches
+    
+}
+
+
+const mapDispatchToProps = (state: any): toggleStates => {return state}
+
+export default connect(mapStateToProps)(Settings);
 
 export const GlobalStyles = StyleSheet.create({
     screenBgColor: {
