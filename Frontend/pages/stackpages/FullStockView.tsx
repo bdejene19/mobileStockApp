@@ -2,13 +2,14 @@ import React, {FC, useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import { StockProps } from '../../components/StockPreview';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import {faAlignJustify, faCaretUp} from '@fortawesome/free-solid-svg-icons'
+import {faAlignJustify, faCaretUp, faCaretDown} from '@fortawesome/free-solid-svg-icons'
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList, RootTabParamList, StackRoutes, TabRoutes} from '../../routes';
 import { ScrollGraphNav } from '../../components/ScrollGraphNav';
 import { useNavigation } from '@react-navigation/core';
 import { GlobalStyles } from '../tabpages/Settings';
 import { connect } from 'react-redux';
+import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
 
 interface StockContent {
@@ -25,14 +26,16 @@ type fullStockProps = NativeStackScreenProps<RootStackParamList, StackRoutes.Ful
 
 const FullStockView: FC<StockContent> = (props) => {
     const [isGreen, setIsGreen] = useState<string>('black');
-    const [arrowDirection, setArrowDirection] = useState()
+    const [arrowDirection, setArrowDirection] = useState<ReactJSXElement>(<FontAwesomeIcon icon={faCaretUp} style={styles.icon}/>)
 
     useEffect(() => {
         if (props.dayPercentMove !== null) {
             if (props.dayPercentMove >= 0) {
                 setIsGreen('green')
+                setArrowDirection(<FontAwesomeIcon icon={faCaretUp} style={styles.icon}/>)
             } else {
                 setIsGreen('red')
+                setArrowDirection(<FontAwesomeIcon icon={faCaretDown} style={styles.icon}/>)
             }
         }
     }, [    ])
@@ -46,7 +49,7 @@ const FullStockView: FC<StockContent> = (props) => {
 
                     <View style={styles.directPriceContent}>
                         <Text style={[styles.textContent, {color: isGreen}]}>$143.32</Text>
-                        <FontAwesomeIcon icon={faCaretUp} style={styles.icon}></FontAwesomeIcon>
+                        {arrowDirection}
                         <Text style={[styles.percentMove, {color: isGreen}]}>1.25%</Text>
                     </View>
                 </View>

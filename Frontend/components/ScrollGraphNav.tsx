@@ -23,15 +23,15 @@ export const ScrollGraphNav: FC = () => {
         <SafeAreaView>
             <ScrollView style={styles.navContainer} horizontal scrollEnabled disableIntervalMomentum scrollToOverflowEnabled={true}>
                 <TouchableOpacity onPress={() => setGraphOption(navOptions.oneDay)} style={styles.navItem}>
-                    <Text style={graphOption === navOptions.oneDay ? {color: 'orange'}: null}>{navOptions.oneDay}</Text>
+                    <Text style={graphOption === navOptions.oneDay ? {color: 'orange'}: {color: 'white'}}>{navOptions.oneDay}</Text>
                 </TouchableOpacity>
             
                 <TouchableOpacity onPress={() => setGraphOption(navOptions.pre)} style={styles.navItem}>
-                    <Text style={graphOption === navOptions.pre ? {color: 'orange'}: null}>{navOptions.pre}</Text>
+                    <Text style={graphOption === navOptions.pre ? {color: 'orange'}: {color: 'white'}}>{navOptions.pre}</Text>
                 </TouchableOpacity>
                 
                 <TouchableOpacity onPress={() => setGraphOption(navOptions.post)} style={[styles.navItem, {borderRightColor: 'transparent'}]}>
-                    <Text style={graphOption === navOptions.post ? {color: 'orange'}: null}>{navOptions.post}</Text>
+                    <Text style={graphOption === navOptions.post ? {color: 'orange'}: {color: 'white'}}>{navOptions.post}</Text>
                 </TouchableOpacity>
             </ScrollView>
         </SafeAreaView>
@@ -43,10 +43,9 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '20%',
         flexDirection: 'row',
-        borderTopColor: 'white',
-        borderTopWidth: 1,
-        borderBottomColor: 'white',
-        borderBottomWidth: 1,
+        borderWidth: 1.5,
+        borderColor: 'white',
+        borderRadius: 7,
         
     },
     

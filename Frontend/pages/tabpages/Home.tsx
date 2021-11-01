@@ -66,7 +66,7 @@ const Home: FC = () => {
         // websockets pre-built into latest react native=> therefore dont need to rely on 3rd party libraries
         // NOTE: for react-native && websockets => need to use ip address and wss
         // socket.current = new WebSocket('ws://localhost:8000',);
-        socket.current = new WebSocket('wss://ws.twelvedata.com/v1/quotes/price?apikey=6ca188086bb74ba88ddaa94c9d184322');
+        socket.current = new WebSocket('wss://ws.twelvedata.com/v1/quotes/price?apikey=d71724ce43e342f19aa946ce9d197a8a');
         
         let ws = socket.current;
 
@@ -79,13 +79,12 @@ const Home: FC = () => {
             // for my api usage
             // fetch('https://api.twelvedata.com/api_usage?apikey=6ca188086bb74ba88ddaa94c9d184322').then(res => console.log(res.json()))
 
-            ws.send(`{
-                "action": "unsubscribe", 
-                "params": {
-                    "symbols": "AAPL",
-                }
-              }`)
-            // fetch('https://api.twelvedata.com/stocks?symbol:NYSE').then(res => res.json()).then(res => console.log(res)).catch(e => console.log())
+            // ws.send(`{
+            //     "action": "subscribe", 
+            //     "params": {
+            //         "symbols": "AAPL",
+            //     }
+            //   }`)
         } ;
 
         ws.onmessage = (msg) => {
