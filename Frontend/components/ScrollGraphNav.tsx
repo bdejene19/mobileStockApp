@@ -12,7 +12,6 @@ export const ScrollGraphNav: FC = () => {
         }
     }, [])
 
-    let navBtnStyle = 
 
     useEffect(() => {
 

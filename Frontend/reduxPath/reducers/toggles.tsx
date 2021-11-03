@@ -1,5 +1,4 @@
 //  when creating a reducer function in redux => need to import the action types for a more centralized approach
-import { Action } from "redux";
 import { ActionType } from "../actionTypes";
 
 // set your expected initial state for what you are targeting the reducer for (e.g. is initial state of dark mode true or fale?)
@@ -28,7 +27,9 @@ interface TextToggle {
     payload: boolean
 }
 
-export default function(state: toggleStates = initialState, action: ColorToggle | TextToggle) {
+export type Action = ColorToggle | TextToggle
+
+export default function(state: toggleStates = initialState, action: Action) {
     switch (action.type) {
         case ActionType.TOGGLE_DARK_MODE: {
             return {
