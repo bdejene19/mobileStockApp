@@ -7,7 +7,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList, RootTabParamList, StackRoutes, TabRoutes} from '../../routes';
 import { ScrollGraphNav } from '../../components/ScrollGraphNav';
 import { useNavigation } from '@react-navigation/core';
-import { GlobalStyles } from '../tabpages/Settings';
+import { GlobalDarkStyles } from '../tabpages/Settings';
 import { connect } from 'react-redux';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
@@ -41,7 +41,7 @@ const FullStockView: FC<StockContent> = (props) => {
     }, [    ])
 
     return (
-        <View style={GlobalStyles.screenBgColor}>
+        <View style={GlobalDarkStyles.screenBgColor}>
             <View style={styles.headContainer}>
                 <View style={styles.nav}>
                     {/* <FontAwesomeIcon icon={ faCoffee }/> */}

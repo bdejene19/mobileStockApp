@@ -95,7 +95,7 @@ const Home: FC = () => {
                 volume: stockObject.day_volume,
                 exchange: stockObject.exchange,    
             }
-            console.log(msg.data);
+            console.log(msg );
             setapple(returnedObject.currPrice);
 
         };
