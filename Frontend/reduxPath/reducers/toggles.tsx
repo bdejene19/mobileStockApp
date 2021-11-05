@@ -5,8 +5,8 @@ import { ActionType } from "../actionTypes";
 
 // creating my interface for my state
 export interface toggleStates {
-    isDark: boolean,
-    isLarge: boolean,
+    isDark?: boolean,
+    isLarge?: boolean,
 }
 
 // creating initial state

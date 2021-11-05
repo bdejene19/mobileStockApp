@@ -17,7 +17,7 @@ export interface StockProps {
 
 export const StockPreview: FC<StockProps> = (props) => {
 
-    const deleteButton: ReactNode =    <TouchableOpacity style={styles.deleteWrapper}>
+    const deleteButton: ReactNode = <TouchableOpacity style={styles.deleteWrapper}>
                                         <FontAwesomeIcon icon={faMinusCircle} size={30} style={{color: 'white'}}/>
                                     </TouchableOpacity>
     return (
