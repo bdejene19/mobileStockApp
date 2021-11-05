@@ -10,6 +10,8 @@ import  FullStockView  from '../stackpages/FullStockView';
 import { createNativeStackNavigator} from '@react-navigation/native-stack';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { GlobalDarkStyles } from './Settings';
+import { toggleStates } from '../../reduxPath/reducers/toggles';
+import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
 
 
@@ -40,7 +42,7 @@ const navigationOptions: NativeStackNavigationOptions = {
 
 // homepage component is a screen. this is defined through its type
 // pass navigation deconstruction to allow navigation to separate pages
-const HomePage: FC<homeScreenProps> = ({navigation}) => {
+const HomePage: FC<homeScreenProps> = ({navigation}):ReactJSXElement => {
 
     return (
         <View style={GlobalDarkStyles.screenBgColor}>
@@ -116,20 +118,3 @@ const Home: FC = () => {
     )
 }
 export default Home;
-
-const styles = StyleSheet.create({
-    homePageContainer: {
-        // padding: '1%',
-        height: '100%',
-        backgroundColor: 'black',
-        borderTopColor: 'orange',
-        borderWidth: 1,
-    },
-
-    search: {
-        color: 'white',
-        borderColor: 'white',
-     
-
-    }
-})

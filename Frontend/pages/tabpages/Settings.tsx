@@ -25,22 +25,26 @@ const Settings: FC<settingsProps> = (props) => {
     // Should I call GlobalDarkStyles at top level in App.tsx file => however, that doesn't stop the fact I need to access state 
     // alternatives would be using context.provider and useReducer => or redux
     // however, would using redux allow me to pass state sideways?
+    let [currentStyle, setCurrentStyle] = useState(GlobalDarkStyles);
+    useEffect(() => {
+        props.isDark ? setCurrentStyle(GlobalDarkStyles) : setCurrentStyle(GlobalLightStyles)
+    }, [props.isDark])
 
     return (
-        <View style={[props.isDark ? GlobalDarkStyles.screenBgColor : GlobalLightStyles.screenBgColor]}>
-            <Text style={[GlobalDarkStyles.mainScreenHeaderTitle, props.isDark ? {color: 'orange'} : {color: 'slateblue'}]}>Visuals</Text>
+        <View style={currentStyle.screenBgColor}>
+            <Text style={currentStyle.mainScreenHeaderTitle}>Visuals</Text>
 
-            <View style={[props.isDark ? GlobalDarkStyles.switchContainer : GlobalLightStyles.switchContainer]}>
-                <Text style={[props.isDark ? GlobalDarkStyles.contentText : GlobalLightStyles.contentText]}>Dark Mode</Text>
-                <View style={GlobalDarkStyles.toggle}>
-                    <Switch value={props.isDark} onValueChange={(value) => props.toggleDarkMode(value)} trackColor={{true: 'lime'}} ios_backgroundColor='white'></Switch>
+            <View style={currentStyle.switchContainer}>
+                <Text style={currentStyle.contentText}>Dark Mode</Text>
+                <View style={currentStyle.toggle}>
+                    <Switch value={props.isDark} onValueChange={(value) => props.toggleDarkMode(value)} trackColor={{true: 'lightorange'}} ios_backgroundColor='white'></Switch>
                 </View>
             </View>
 
-            <View style={[props.isDark ? GlobalDarkStyles.switchContainer : GlobalLightStyles.switchContainer]}>
-                <Text style={[GlobalDarkStyles.contentText, props.isDark ? {color: 'white'} : {color: 'lightblue'}]}>Large Text</Text>
-                <View style={GlobalDarkStyles.toggle}>
-                    <Switch value={props.isLarge} onValueChange={(value) => props.toggleLargeText(value)} trackColor={{true: 'lime'}} ios_backgroundColor='white'></Switch>
+            <View style={currentStyle.switchContainer}>
+                <Text style={currentStyle.contentText}>Large Text</Text>
+                <View style={currentStyle.toggle}>
+                    <Switch value={props.isLarge} onValueChange={(value) => props.toggleLargeText(value)} trackColor={{true: 'lightorange'}} ios_backgroundColor='white'></Switch>
                 </View>
             </View>
         </View>
@@ -62,8 +66,6 @@ const Settings: FC<settingsProps> = (props) => {
 }
 
 
-const mapDispatchToProps = (state: any): toggleStates => {return state}
-
 export default connect(mapStateToProps, {toggleDarkMode, toggleLargeText})(Settings);
 
 export const GlobalDarkStyles = StyleSheet.create({
@@ -77,6 +79,7 @@ export const GlobalDarkStyles = StyleSheet.create({
         fontSize: 28,
         marginBottom: '5%',
         fontWeight: '700',
+        color: 'orange',
 
     },
 
@@ -106,18 +109,24 @@ export const GlobalDarkStyles = StyleSheet.create({
 
 
 export const GlobalLightStyles = StyleSheet.create({
+    ...GlobalDarkStyles,
     screenBgColor: {
         ...GlobalDarkStyles.screenBgColor,
         backgroundColor: 'white'
     },
 
+    mainScreenHeaderTitle: {
+        ...GlobalDarkStyles.mainScreenHeaderTitle, 
+        color: 'skyblue',
+    },
+
     switchContainer: {
         ...GlobalDarkStyles.switchContainer,
-        borderTopColor: 'lightblue',
+        borderTopColor: 'lightgreen',
     }, 
     
     contentText: {
         ...GlobalDarkStyles.contentText, 
-        color: 'lightblue',
+        color: 'lightgreen',
     }
 })
