@@ -32,7 +32,6 @@ const Main: FC<toggleStates> = (props) => {
             color: 'white',
             fontSize: 24,
             fontWeight: '700',
-
         },
     }
 
@@ -47,6 +46,7 @@ const Main: FC<toggleStates> = (props) => {
     }
 
     const [currentTabSelection, setTabStyle] = useState<BottomTabNavigationOptions>(darkTabScreenOptions);
+
     useEffect(() => {
         if (props.isDark) {
             setTabStyle(darkTabScreenOptions);

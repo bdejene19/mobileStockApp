@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Switch, SwitchProps} from 'react-native';
 import { toggleDarkMode, toggleLargeText } from '../../reduxPath/actions';
 import {connect, useSelector, useDispatch} from 'react-redux'
 import { toggleStates } from '../../reduxPath/reducers/toggles';
+import { useDarkMode } from '../mainPageFunctions';
 
 // this is my COMPONENT interface => i am inheriting the toggleStates interface from my toggles reducer 
 // by doing so, I can map my state and dispatch actions using proops
@@ -17,18 +18,8 @@ interface settingsProps extends toggleStates {
  * 
  */
 const Settings: FC<settingsProps> = (props) => {
-    // const [darkMode, setDarkMode] = useState<boolean>(darkTheme);
-    // const [largeText, setLargeText] = useState<boolean>(largeTextTheme);
-
-
-    // NEED to figure out how to pass the state of settings through the rest of app
-    // Should I call GlobalDarkStyles at top level in App.tsx file => however, that doesn't stop the fact I need to access state 
-    // alternatives would be using context.provider and useReducer => or redux
-    // however, would using redux allow me to pass state sideways?
-    let [currentStyle, setCurrentStyle] = useState(GlobalDarkStyles);
-    useEffect(() => {
-        props.isDark ? setCurrentStyle(GlobalDarkStyles) : setCurrentStyle(GlobalLightStyles)
-    }, [props.isDark])
+    // implementing custom hook to handle dark mode toggle; 
+    let currentStyle = useDarkMode(props.isDark, GlobalDarkStyles, GlobalLightStyles);
 
     return (
         <View style={currentStyle.screenBgColor}>

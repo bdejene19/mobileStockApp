@@ -3,14 +3,14 @@ import { View, Text, StyleSheet, SectionList, Linking, Button} from 'react-nativ
 import { connect } from 'react-redux';
 import { toggleStates } from '../../reduxPath/reducers/toggles';
 import { GlobalDarkStyles, GlobalLightStyles } from './Settings';
+import { useDarkMode } from '../mainPageFunctions';
+
 
 interface supportListProps extends toggleStates {} ;
 
 const SupportList: FC<supportListProps> = (props) => {
-    let [currentStyle, setCurrentStyle] = useState(stylesDark);
-    useEffect(() => {
-        props.isDark ? setCurrentStyle(stylesDark) : setCurrentStyle(stylesLight)
-    }, [props.isDark])
+    let currentStyle = useDarkMode(props.isDark, stylesDark, stylesLight);
+
     return (
         // <ScrollView style={stylesDark.screenContainer}>
             <View  style={props.isDark ? GlobalDarkStyles.screenBgColor : GlobalLightStyles.screenBgColor}>

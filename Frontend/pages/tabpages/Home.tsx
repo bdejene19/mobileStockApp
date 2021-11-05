@@ -9,9 +9,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import  FullStockView  from '../stackpages/FullStockView';
 import { createNativeStackNavigator} from '@react-navigation/native-stack';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { GlobalDarkStyles } from './Settings';
+import { GlobalDarkStyles, GlobalLightStyles } from './Settings';
 import { toggleStates } from '../../reduxPath/reducers/toggles';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
+import { useDarkMode } from '../mainPageFunctions';
+import { connect } from 'react-redux';
 
 
 
@@ -40,10 +42,11 @@ const navigationOptions: NativeStackNavigationOptions = {
    
 }
 
+interface home extends toggleStates {}
 // homepage component is a screen. this is defined through its type
 // pass navigation deconstruction to allow navigation to separate pages
-const HomePage: FC<homeScreenProps> = ({navigation}):ReactJSXElement => {
-
+const HomePage: FC<homeScreenProps> = ({navigation}, props: home):ReactJSXElement => {
+    let currentStyle = useDarkMode(props.isDark, GlobalDarkStyles, GlobalLightStyles);
     return (
         <View style={GlobalDarkStyles.screenBgColor}>
             <SearchBar></SearchBar>
@@ -53,6 +56,7 @@ const HomePage: FC<homeScreenProps> = ({navigation}):ReactJSXElement => {
 
     )
 }
+
 
 const Home: FC = () => {
     const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -117,4 +121,9 @@ const Home: FC = () => {
         </RootStack.Navigator> 
     )
 }
-export default Home;
+
+const mapStateToProps = (state: any):any => {
+    let {toggleSwitches} = state;
+    return toggleSwitches;
+}
+export default connect(mapStateToProps)(Home);
