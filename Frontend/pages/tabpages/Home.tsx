@@ -33,22 +33,16 @@ const navigationOptions: NativeStackNavigationOptions = {
       fontSize: 28,
     },
     headerBackTitleVisible: false,
-    
-
     headerTitleAlign: 'left',
-    headerTintColor:'white',   
-    // header: () => null,
-    
-   
+    headerTintColor:'white',       
 }
 
-interface home extends toggleStates {}
 // homepage component is a screen. this is defined through its type
 // pass navigation deconstruction to allow navigation to separate pages
 
 
 
-const Home: FC<home> = (props) => {
+const Home: FC<toggleStates> = (props) => {
     const RootStack = createNativeStackNavigator<RootStackParamList>();
     let socket = useRef<null | WebSocket>(null);
     // useEffect(() => {
@@ -58,7 +52,7 @@ const Home: FC<home> = (props) => {
     const[apple, setapple] = useState<number>(0);
     let currentStyle = useDarkMode(props.isDark, GlobalDarkStyles, GlobalLightStyles);
 
-    const HomePage: FC<homeScreenProps> = ({navigation}, props: home):ReactJSXElement => {
+    const HomePage: FC<homeScreenProps> = ({navigation}):ReactJSXElement => {
         return (
             <View style={currentStyle.screenBgColor}>
                 <SearchBar></SearchBar>
@@ -87,12 +81,13 @@ const Home: FC<home> = (props) => {
             // for my api usage
             // fetch('https://api.twelvedata.com/api_usage?apikey=6ca188086bb74ba88ddaa94c9d184322').then(res => console.log(res.json()))
 
-            // ws.send(`{
-            //     "action": "subscribe", 
-            //     "params": {
-            //         "symbols": "AAPL",
-            //     }
-            //   }`)
+            ws.send(`{
+                "action": "subscribe",
+                "params": {
+                    "symbols": "AAPL"
+                  }            
+            }`)
+
         } ;
 
         ws.onmessage = (msg) => {
@@ -103,7 +98,7 @@ const Home: FC<home> = (props) => {
                 volume: stockObject.day_volume,
                 exchange: stockObject.exchange,    
             }
-            console.log(msg );
+            console.log(msg.data );
             setapple(returnedObject.currPrice);
 
         };
