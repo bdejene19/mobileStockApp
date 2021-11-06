@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Switch, SwitchProps} from 'react-native';
 import { toggleDarkMode, toggleLargeText } from '../../reduxPath/actions';
 import {connect, useSelector, useDispatch} from 'react-redux'
 import { toggleStates } from '../../reduxPath/reducers/toggles';
-import { useDarkMode } from '../mainPageFunctions';
+import { useDarkMode, useLargeText } from '../mainPageFunctions';
 
 // this is my COMPONENT interface => i am inheriting the toggleStates interface from my toggles reducer 
 // by doing so, I can map my state and dispatch actions using proops
@@ -19,22 +19,22 @@ interface settingsProps extends toggleStates {
  */
 const Settings: FC<settingsProps> = (props) => {
     // implementing custom hook to handle dark mode toggle; 
-    let currentStyle = useDarkMode(props.isDark, GlobalDarkStyles, GlobalLightStyles);
-
+    let colorTheme = useDarkMode(props.isDark, GlobalDarkStyles, GlobalLightStyles);
+    let fontSize = useLargeText(props.isLarge, regularFontSizes, largeFontSizes)
     return (
-        <View style={currentStyle.screenBgColor}>
-            <Text style={currentStyle.mainScreenHeaderTitle}>Visuals</Text>
+        <View style={colorTheme.screenBgColor}>
+            <Text style={[colorTheme.mainScreenHeaderTitle, fontSize.mainHeaderSize]}>Visuals</Text>
 
-            <View style={currentStyle.switchContainer}>
-                <Text style={currentStyle.contentText}>Dark Mode</Text>
-                <View style={currentStyle.toggle}>
+            <View style={colorTheme.switchContainer}>
+                <Text style={[colorTheme.contentText, fontSize.contentTextSize]}>Dark Mode</Text>
+                <View style={colorTheme.toggle}>
                     <Switch value={props.isDark} onValueChange={(value) => props.toggleDarkMode(value)} trackColor={{true: 'lightorange'}} ios_backgroundColor='white'></Switch>
                 </View>
             </View>
 
-            <View style={currentStyle.switchContainer}>
-                <Text style={currentStyle.contentText}>Large Text</Text>
-                <View style={currentStyle.toggle}>
+            <View style={colorTheme.switchContainer}>
+                <Text style={[colorTheme.contentText, fontSize.contentTextSize]}>Large Text</Text>
+                <View style={colorTheme.toggle}>
                     <Switch value={props.isLarge} onValueChange={(value) => props.toggleLargeText(value)} trackColor={{true: 'lightorange'}} ios_backgroundColor='white'></Switch>
                 </View>
             </View>
@@ -67,7 +67,6 @@ export const GlobalDarkStyles = StyleSheet.create({
     },
     
     mainScreenHeaderTitle: {
-        fontSize: 28,
         marginBottom: '5%',
         fontWeight: '700',
         color: 'orange',
@@ -119,5 +118,48 @@ export const GlobalLightStyles = StyleSheet.create({
     contentText: {
         ...GlobalDarkStyles.contentText, 
         color: 'lightgreen',
+    }
+})
+
+export const regularFontSizes = StyleSheet.create({
+    mainHeaderSize: {
+        fontSize: 28,
+    },
+
+    subHeaderSize: {
+        fontSize: 24,
+    },
+
+    contentTextSize: {
+        fontSize: 20
+    },
+
+    subContentTextSize: {
+        fontSize: 18,
+    },
+
+    sectionListContainer: {
+        maxHeight: '45%',
+    }
+})
+
+export const largeFontSizes = StyleSheet.create({
+    ...regularFontSizes,
+    mainHeaderSize: {
+        fontSize: 40,
+        letterSpacing: 1.5,
+    },
+
+    contentTextSize: {
+        fontSize: 28,
+        letterSpacing: 1.5,
+    },
+
+    subContentTextSize: {
+        fontSize: 24,
+    },
+
+    sectionListContainer: {
+        maxHeight: '70%',
     }
 })

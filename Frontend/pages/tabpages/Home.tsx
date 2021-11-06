@@ -45,27 +45,29 @@ const navigationOptions: NativeStackNavigationOptions = {
 interface home extends toggleStates {}
 // homepage component is a screen. this is defined through its type
 // pass navigation deconstruction to allow navigation to separate pages
-const HomePage: FC<homeScreenProps> = ({navigation}, props: home):ReactJSXElement => {
-    let currentStyle = useDarkMode(props.isDark, GlobalDarkStyles, GlobalLightStyles);
-    return (
-        <View style={GlobalDarkStyles.screenBgColor}>
-            <SearchBar></SearchBar>
-            <StockPreview ticker='NKE' companyName="nike"  stockValue={1} dayPercentMove={3} bgColor='green'></StockPreview>
-            <Button title='test Nav' onPress={() => navigation.navigate(StackRoutes.FullStock)}></Button>
-        </View> 
-
-    )
-}
 
 
-const Home: FC = () => {
+
+const Home: FC<home> = (props) => {
     const RootStack = createNativeStackNavigator<RootStackParamList>();
     let socket = useRef<null | WebSocket>(null);
     // useEffect(() => {
     //     fetch('http://localhost:8000/fullStock').then(res => res.json()).then(data => console.log(data)).catch(err => console.log('there was an error'))
 
     // })
-    const[apple, setapple] = useState<number>(0)
+    const[apple, setapple] = useState<number>(0);
+    let currentStyle = useDarkMode(props.isDark, GlobalDarkStyles, GlobalLightStyles);
+
+    const HomePage: FC<homeScreenProps> = ({navigation}, props: home):ReactJSXElement => {
+        return (
+            <View style={currentStyle.screenBgColor}>
+                <SearchBar></SearchBar>
+                <StockPreview ticker='NKE' companyName="nike"  stockValue={1} dayPercentMove={3} bgColor='green'></StockPreview>
+                <Button title='test Nav' onPress={() => navigation.navigate(StackRoutes.FullStock)}></Button>
+            </View> 
+    
+        )
+    }
 
 
     useEffect(() => {
