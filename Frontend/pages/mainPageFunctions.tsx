@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faHome, faCog, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { StyleProp } from 'react-native';
+import { StyleProp, View } from 'react-native';
 
 // handles tab bar icons and focus event
 export const handleTabIcon = (isFocused: boolean, routeName: string) => {
@@ -32,4 +32,14 @@ export const useDarkMode = (darkMode: boolean | undefined, darkStyle: StyleMedia
     }, [darkMode]);
 
     return currentStyle;
+}
+
+// custom hook for font-size;
+export const useLargeText = (isLarge: boolean | undefined, regularFont: StyleMedia, largeFont: StyleMedia):StyleProp<any> => {
+    let [currentSize, setCurrentSize] = useState(regularFont);
+    useEffect(() => {
+        isLarge ? setCurrentSize(largeFont) : setCurrentSize(regularFont)
+    }, [isLarge]);
+
+    return currentSize;
 }
