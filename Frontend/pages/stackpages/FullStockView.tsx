@@ -14,34 +14,29 @@ import { toggleStates } from '../../reduxPath/reducers/toggles';
 import { useDarkMode } from '../mainPageFunctions';
 
 
-interface StockContent extends toggleStates {
-    ticker: string,
-    name: string,
-    currentPrice: number,
-    percentageMove: number,
-    companyName: string,
-    dayPercentMove: number,
-}
+interface StockContent extends toggleStates, StockProps {}
 
 type fullStockProps = NativeStackScreenProps<RootStackParamList, StackRoutes.FullStock>;
 
 
 const FullStockView: FC<StockContent> = (props) => {
     const [isGreen, setIsGreen] = useState<string>('black');
-    const [arrowDirection, setArrowDirection] = useState<ReactJSXElement>(<FontAwesomeIcon icon={faCaretUp} style={darkStyles.icon}/>)
     let currentStyle = useDarkMode(props.isDark, darkStyles, lightStyles);
+    const [arrowDirection, setArrowDirection] = useState<ReactJSXElement>(<FontAwesomeIcon icon={faCaretUp} size={28} color='green'/>)
+
 
     return (
-        <View style={props.isDark ? GlobalDarkStyles.screenBgColor : GlobalLightStyles.screenBgColor}>
+        <View style={{backgroundColor: 'black', height: '100%',}}>
             <View style={currentStyle.headContainer}>
                 <View style={currentStyle.nav}>
                     {/* <FontAwesomeIcon icon={ faCoffee }/> */}
                     <Text style={currentStyle.textContent}>APPLE INC.</Text>
-
                     <View style={currentStyle.directPriceContent}>
-                        <Text style={[currentStyle.textContent, {color: isGreen}]}>$143.32</Text>
+                        <Text style={currentStyle.currPrice}>205</Text>
                         {arrowDirection}
-                        <Text style={[currentStyle.percentMove, {color: isGreen}]}>1.25%</Text>
+                        <Text style={[currentStyle.percentMove]}>$2.29</Text>
+
+                        <Text style={[currentStyle.percentMove]}>(1.25%)</Text>
                     </View>
                 </View>
                 <ScrollGraphNav/>
@@ -64,17 +59,10 @@ export default connect(mapStateToProps)(FullStockView);
 
 
 const darkStyles = StyleSheet.create({
-    headWrap: {
-        backgroundColor: 'black',
-    },
-
     headContainer: {
         // height: 100,
         padding: '2%',
-        // top: '50%',
-        borderColor: 'green',
-        borderWidth: 2,
-
+        backgroundColor: 'darkred',
     },
 
     nav: {
@@ -83,44 +71,39 @@ const darkStyles = StyleSheet.create({
   
     directPriceContent: {
         flexDirection: 'row',
+        alignItems: 'center',
         width: '100%',
     },
 
-    percentMove: {
-        fontSize: 16,
-        borderWidth: 1,
-        borderColor: 'black'
-    },
-    icon: {
-        fontSize: 32,
+
+    currPrice: {
+        fontSize: 32    ,
+        fontWeight: '800',
         color: 'white',
     },
+    percentMove: {
+        fontSize: 16,
+        fontWeight: '800',
+        color: 'green',
+    },
+ 
     mainNavContent: {
         
     }, 
 
     textContent: {
         color: 'white',
-        fontSize: 28,
-        fontWeight: '700',
+        fontSize: 16,
+        // fontWeight: '700',
     }
 
 })
 
 const lightStyles = StyleSheet.create({
     ...darkStyles,
-    headWrap: {
-        ...darkStyles.headWrap,
-        backgroundColor: 'aqua',
-    },
     headContainer: {
         ...darkStyles.headContainer,
-        borderColor: 'blue',
-    },
-
-    icon: {
-        ...darkStyles.icon,
-        color: 'green',
+        backgroundColor: '#43A6C6',
     },
     
     textContent: {

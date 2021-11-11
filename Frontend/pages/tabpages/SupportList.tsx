@@ -132,6 +132,10 @@ const stylesLight = StyleSheet.create({
     bulletContent: {
         ...stylesDark.bulletContent,
         color: 'lightblue'
+    },
+    learnMore: {
+        ...stylesDark.learnMore,
+        backgroundColor: 'lightgreen'
     }
 })
 

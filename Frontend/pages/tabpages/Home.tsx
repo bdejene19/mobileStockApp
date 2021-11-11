@@ -1,6 +1,6 @@
-import React, {FC, useEffect, useState, useRef} from 'react';
+import React, {FC, useEffect, useState, useRef, createContext, Suspense} from 'react';
 import {View, Text, StyleSheet, Button} from 'react-native';
-import {StockPreview} from '../../components/StockPreview';
+import {StockPreview, StockProps} from '../../components/StockPreview';
 import { SearchBar } from '../../components/SearchBar';
 import { RootTabParamList, TabRoutes, StackRoutes, RootStackParamList } from '../../routes';
 import {useNavigation} from '@react-navigation/native';
@@ -21,44 +21,32 @@ import { connect } from 'react-redux';
 // defining screen type => takes 2 params: our list of pages, then the name of the current route;
 type homeScreenProps = NativeStackScreenProps<RootStackParamList, StackRoutes.WatchList>;
 
-const navigationOptions: NativeStackNavigationOptions = {
-    headerStyle: {
-      backgroundColor: 'black',
-    },
-
-    headerShadowVisible: false,
-    headerTitleStyle: {
-      fontWeight: '700',
-      color: 'white',
-      fontSize: 28,
-    },
-    headerBackTitleVisible: false,
-    headerTitleAlign: 'left',
-    headerTintColor:'white',       
-}
-
 // homepage component is a screen. this is defined through its type
 // pass navigation deconstruction to allow navigation to separate pages
 
-
-
+const MyContext = createContext({});
 const Home: FC<toggleStates> = (props) => {
     const RootStack = createNativeStackNavigator<RootStackParamList>();
     let socket = useRef<null | WebSocket>(null);
-    // useEffect(() => {
-    //     fetch('http://localhost:8000/fullStock').then(res => res.json()).then(data => console.log(data)).catch(err => console.log('there was an error'))
+    
+    const[stockContent, setStockContent] = useState<StockProps>({
+                                                                    currentPrice: 0,
+                                                                    companyName: null,
+                                                                    ticker: null,
+                                                                    dayPercentMove: 0,
 
-    // })
-    const[apple, setapple] = useState<number>(0);
+                                                                });
     let currentStyle = useDarkMode(props.isDark, GlobalDarkStyles, GlobalLightStyles);
 
     const HomePage: FC<homeScreenProps> = ({navigation}):ReactJSXElement => {
         return (
+            
             <View style={currentStyle.screenBgColor}>
                 <SearchBar></SearchBar>
-                <StockPreview ticker='NKE' companyName="nike"  stockValue={1} dayPercentMove={3} bgColor='green'></StockPreview>
+                <StockPreview ticker={stockContent.ticker} companyName="APPLE INC."  currentPrice={stockContent.currentPrice} dayPercentMove={3}></StockPreview>
                 <Button title='test Nav' onPress={() => navigation.navigate(StackRoutes.FullStock)}></Button>
-            </View> 
+            </View>
+ 
     
         )
     }
@@ -73,48 +61,53 @@ const Home: FC<toggleStates> = (props) => {
         let ws = socket.current;
 
         
-        
         ws.onopen = () => {
             console.log('connected')
-            // HOOOORAY! this code ws.send is getting real time feed back from server => however, need to figure out how to subscrobe to multiple channels
-            // ws.send('{"type":"subscribe","symbol":"AAPL"}')
-            // for my api usage
-            // fetch('https://api.twelvedata.com/api_usage?apikey=6ca188086bb74ba88ddaa94c9d184322').then(res => console.log(res.json()))
-
             ws.send(`{
-                "action": "subscribe",
+                "action": "subscribe", 
                 "params": {
-                    "symbols": "AAPL"
-                  }            
-            }`)
-
-        } ;
-
+                  "symbols": "AAPL"
+                }
+              }`);
+        };
+        let returnedObject: StockProps = {
+            ticker: null,
+            currentPrice: 0,
+            companyName: null,
+            dayPercentMove: 0,
+            volume: 0,
+            exchange: null,
+        }
         ws.onmessage = (msg) => {
             let stockObject = JSON.parse(msg.data);
-            let returnedObject = {
-                currPrice: stockObject.price,
-                symbol: stockObject.symbol, 
+            returnedObject = {
+                ticker: stockObject.symbol,
+                currentPrice: stockObject.price,
+                dayPercentMove: stockObject.price,
                 volume: stockObject.day_volume,
-                exchange: stockObject.exchange,    
-            }
-            console.log(msg.data );
-            setapple(returnedObject.currPrice);
-
-        };
-
-        ws.onclose = () => console.log(ws.readyState);
+                exchange: stockObject.exchange,  
+                companyName: stockObject.ticker,  
+            }  
+            
+            return returnedObject
+            
+           
+        }  
+        
+        let checkPrices = setInterval(() => {
+            console.log(stockContent);
+            setStockContent(returnedObject);
+        }, 10000)
+    
+        ws.onclose = () => clearInterval(checkPrices);
 
         ws.onerror = e => console.log('my error: ', e);
-        // ws.close();
-
-    })
-
+    }, [])
     return (
         <RootStack.Navigator initialRouteName={StackRoutes.WatchList} screenOptions={{headerShown: false}}>
-            <RootStack.Screen 
-            name={StackRoutes.WatchList} component={HomePage} options={navigationOptions}></RootStack.Screen>
-            <RootStack.Screen name={StackRoutes.FullStock} component={FullStockView}></RootStack.Screen>
+                <RootStack.Screen 
+                name={StackRoutes.WatchList} component={HomePage} options={navigationOptions}></RootStack.Screen>
+                <RootStack.Screen name={StackRoutes.FullStock} component={FullStockView} options={props.isDark ? fullScreenNavOptions : {...fullScreenNavOptions, headerStyle: {backgroundColor: '#43A6C6'}}}></RootStack.Screen>
         </RootStack.Navigator> 
     )
 }
@@ -124,3 +117,32 @@ const mapStateToProps = (state: any):any => {
     return toggleSwitches;
 }
 export default connect(mapStateToProps)(Home);
+
+const navigationOptions: NativeStackNavigationOptions = {
+    headerStyle: {
+      backgroundColor: 'black',
+    },
+    headerShown: false,
+    headerShadowVisible: false,
+    headerTitleStyle: {
+      fontWeight: '700',
+      color: 'white',
+      fontSize: 28,
+    },
+    headerBackTitleVisible: false,
+    headerTitleAlign: 'left',
+    headerTintColor:'white',       
+}
+
+const fullScreenNavOptions: NativeStackNavigationOptions = {
+    headerShown: true, 
+    headerStyle: {
+        backgroundColor: 'maroon',
+    },
+
+    headerBackTitleVisible: false,
+
+    headerTitleStyle: {
+        color: 'white',
+    }
+}
