@@ -1,3 +1,4 @@
+import Stock from "./reducers/stockClass";
 import { ActionType } from "./actionTypes";
 
 // For actions => you are returning a simple action object with 2 main parameters
@@ -12,4 +13,14 @@ export const toggleDarkMode = (isDarkMode: boolean) => ({
 export const toggleLargeText = (isTextLarge: boolean) => ({
     type: ActionType.TOGGLE_LARGE_TEXT,
     payload: isTextLarge,
+})
+
+export const addToWatchlist = (addStock: Stock) => ({
+    type: ActionType.ADD_TO_WATCHLIST,
+    payload: {addStock},
+})
+
+export const deleteOffWatchList = (deleteStock: Stock) => ({
+    type: ActionType.DELETE_OFF_WATCHLIST,
+    payload: {deleteStock},
 })

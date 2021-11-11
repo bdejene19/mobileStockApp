@@ -3,8 +3,10 @@
 
 import { combineReducers } from "redux";
 import toggles from "./toggles";
+import watchlistHandles from "./watchlistHandles";
 
 const rootReducer = combineReducers({
-    toggleSwitches: toggles
+    toggleSwitches: toggles,
+    // userWatchList: watchlistHandles,
 });
 export default rootReducer;
