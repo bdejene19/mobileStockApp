@@ -21,17 +21,17 @@ export const ScrollGraphNav: FC = () => {
     return (
         <SafeAreaView>
             <ScrollView style={styles.navContainer} horizontal scrollEnabled disableIntervalMomentum scrollToOverflowEnabled={true}>
-                <TouchableOpacity onPress={() => setGraphOption(navOptions.oneDay)} style={styles.navItem}>
-                    <Text style={graphOption === navOptions.oneDay ? {color: 'orange'}: {color: 'white'}}>{navOptions.oneDay}</Text>
-                </TouchableOpacity>
+                <View style={styles.navItem}>
+                    <Text style={graphOption === navOptions.oneDay ? {color: 'orange'}: {color: 'white'}} onPress={() => setGraphOption(navOptions.oneDay)} >{navOptions.oneDay}</Text>
+                </View>
+
+                <View style={styles.navItem}>
+                    <Text style={graphOption === navOptions.pre ? {color: 'orange'}: {color: 'white'}} onPress={() => setGraphOption(navOptions.pre)} >{navOptions.pre}</Text>
+                </View>
             
-                <TouchableOpacity onPress={() => setGraphOption(navOptions.pre)} style={styles.navItem}>
-                    <Text style={graphOption === navOptions.pre ? {color: 'orange'}: {color: 'white'}}>{navOptions.pre}</Text>
-                </TouchableOpacity>
-                
-                <TouchableOpacity onPress={() => setGraphOption(navOptions.post)} style={[styles.navItem, {borderRightColor: 'transparent'}]}>
-                    <Text style={graphOption === navOptions.post ? {color: 'orange'}: {color: 'white'}}>{navOptions.post}</Text>
-                </TouchableOpacity>
+                <View style={[styles.navItem, {borderRightWidth: 0}]}>
+                    <Text style={graphOption === navOptions.post ? {color: 'orange'}: {color: 'white'}} onPress={() => setGraphOption(navOptions.post)} >{navOptions.post}</Text>
+                </View>
             </ScrollView>
         </SafeAreaView>
     )

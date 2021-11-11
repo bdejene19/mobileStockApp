@@ -6,11 +6,12 @@ import {View, StyleSheet, Text,} from 'react-native';
 import { TouchableOpacity, Swipeable } from "react-native-gesture-handler";
 
 export interface StockProps {
-    ticker: string,
-    companyName: string,
-    stockValue: number,
+    ticker: string | null,
+    currentPrice: number,
+    companyName: string | null,
     dayPercentMove: number,
-    bgColor?: string,
+    volume?: number,
+    exchange?: string | null,
 }
 
 
@@ -21,6 +22,7 @@ export const StockPreview: FC<StockProps> = (props) => {
                                         <FontAwesomeIcon icon={faMinusCircle} size={30} style={{color: 'white'}}/>
                                     </TouchableOpacity>
     return (
+        
         <Swipeable renderRightActions={() => deleteButton}>
             <TouchableOpacity style={styles.container} onPress={() => console.log('button pressed')}>
                 <View style={styles.companyNameWrapper}>
@@ -33,7 +35,7 @@ export const StockPreview: FC<StockProps> = (props) => {
                 </View>
                 
                 <View style={styles.numbersContainer}>
-                    <Text style={styles.stockPrice}>{props.stockValue}</Text>
+                    <Text style={styles.stockPrice}>{props.currentPrice}</Text>
                     <View style={styles.dependentBG}>
                         <Text>{props.dayPercentMove}%</Text>
                     </View>
