@@ -14,6 +14,7 @@ import { toggleStates } from '../../reduxPath/reducers/toggles';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import { useDarkMode } from '../mainPageFunctions';
 import { connect } from 'react-redux';
+import { watchlistState } from '../../reduxPath/reducers/watchlistHandles';
 
 
 
@@ -25,7 +26,8 @@ type homeScreenProps = NativeStackScreenProps<RootStackParamList, StackRoutes.Wa
 // pass navigation deconstruction to allow navigation to separate pages
 
 const MyContext = createContext({});
-const Home: FC<toggleStates> = (props) => {
+interface homeComponentProps extends toggleStates, watchlistState {}
+const Home: FC<homeComponentProps> = (props) => {
     const RootStack = createNativeStackNavigator<RootStackParamList>();
     let socket = useRef<null | WebSocket>(null);
     
@@ -43,7 +45,12 @@ const Home: FC<toggleStates> = (props) => {
             
             <View style={currentStyle.screenBgColor}>
                 <SearchBar></SearchBar>
-                <StockPreview ticker={stockContent.ticker} companyName="APPLE INC."  currentPrice={stockContent.currentPrice} dayPercentMove={3}></StockPreview>
+                {props.myList?.map(stock => {
+                    let content= stock.getDayQuote();
+                    console.log('my content: ',content);
+                    return <StockPreview ticker={stock.ticker} companyName={stock.stockName}  currentPrice={stock.currentPrice} dayPercentMove={4}></StockPreview>
+                } )}
+                {/* <StockPreview ticker={stockContent.ticker} companyName="APPLE INC."  currentPrice={stockContent.currentPrice} dayPercentMove={3}></StockPreview> */}
                 <Button title='test Nav' onPress={() => navigation.navigate(StackRoutes.FullStock)}></Button>
             </View>
  
@@ -95,7 +102,6 @@ const Home: FC<toggleStates> = (props) => {
         }  
         
         let checkPrices = setInterval(() => {
-            console.log(stockContent);
             setStockContent(returnedObject);
         }, 10000)
     
@@ -113,8 +119,13 @@ const Home: FC<toggleStates> = (props) => {
 }
 
 const mapStateToProps = (state: any):any => {
-    let {toggleSwitches} = state;
-    return toggleSwitches;
+    let {toggleSwitches, userWatchList} = state;
+    return {
+        isDark: toggleSwitches.isDark,
+        isLarge: toggleSwitches.isLarge,
+        myList: userWatchList.myList
+
+    };
 }
 export default connect(mapStateToProps)(Home);
 

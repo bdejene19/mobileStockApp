@@ -24,7 +24,7 @@ const FullStockView: FC<StockContent> = (props) => {
     let currentStyle = useDarkMode(props.isDark, darkStyles, lightStyles);
     const [arrowDirection, setArrowDirection] = useState<ReactJSXElement>(<FontAwesomeIcon icon={faCaretUp} size={28} color='green'/>)
 
-
+    
     return (
         <View style={{backgroundColor: 'black', height: '100%',}}>
             <View style={currentStyle.headContainer}>
