@@ -1,26 +1,6 @@
 import Stock from "./stockClass";
 import { ActionType } from "../actionTypes";
 
-export interface watchlistState {
-    // for type script, need to define what you expect to have array of => to determine what you expect your array to be made of, write it in front
-    myList: Stock[] | null,   
-}
-
-const initialState = {
-    myList: [],
-}
-
-// action interface typchecking for reducer
-interface addStock {
-    type: ActionType.ADD_TO_WATCHLIST,
-    payload: Stock,
-}
-
-interface deleteStock {
-    type: ActionType.DELETE_OFF_WATCHLIST,
-    payload: Stock,
-}
-
 export type Action = addStock | deleteStock;
 
 export default function(state: watchlistState = initialState, action: Action) {
@@ -85,6 +65,31 @@ export default function(state: watchlistState = initialState, action: Action) {
             }
            
         }
+        default: {
+            return state
+        } 
     }
 
+}
+
+export interface watchlistState {
+    // for type script, need to define what you expect to have array of => to determine what you expect your array to be made of, write it in front
+    myList: Stock[] | null,   
+}
+// initial items will be apple
+let testObj = new Stock('Apple', 'AAPL', 0, 0, 0, 0)
+testObj.getDayQuote();
+const initialState = {
+    myList: [testObj],
+}
+
+// action interface typchecking for reducer
+interface addStock {
+    type: ActionType.ADD_TO_WATCHLIST,
+    payload: Stock,
+}
+
+interface deleteStock {
+    type: ActionType.DELETE_OFF_WATCHLIST,
+    payload: Stock,
 }

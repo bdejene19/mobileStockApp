@@ -7,6 +7,6 @@ import watchlistHandles from "./watchlistHandles";
 
 const rootReducer = combineReducers({
     toggleSwitches: toggles,
-    // userWatchList: watchlistHandles,
+    userWatchList: watchlistHandles,
 });
 export default rootReducer;
