@@ -29,11 +29,11 @@
     "react-native-bootsplash": "^3.2.6",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-reanimated": "^2.2.2",
+    "react-native-responsive-linechart": "^5.7.1",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.8.0",
     "react-native-svg": "^12.1.1",
     "react-redux": "^7.2.5",
-    "recharts": "^2.1.6",
     "redux": "^4.1.1",
     "styled-components": "^5.3.1"
   },
