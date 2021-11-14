@@ -1,15 +1,18 @@
 import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/core";
-import React, {FC, ReactNode, useState} from "react";
+import React, {FC, ReactNode, useState, Suspense} from "react";
 import {View, StyleSheet, Text,} from 'react-native';
-import { TouchableOpacity, Swipeable } from "react-native-gesture-handler";
+import 'react-native-gesture-handler';
+
+// import { Swipeable } from "react-native-gesture-handler";
+import TestLineChart from "./TestLineChart";
 
 export interface StockProps {
     ticker: string | null,
     currentPrice: number,
     companyName: string | null,
-    dayPercentMove: number,
+    dayPercentMove: number | string,
     volume?: number,
     exchange?: string | null,
 }
@@ -18,20 +21,20 @@ export interface StockProps {
 
 export const StockPreview: FC<StockProps> = (props) => {
 
-    const deleteButton: ReactNode = <TouchableOpacity style={styles.deleteWrapper}>
+    const deleteButton: ReactNode = <View style={styles.deleteWrapper}>
                                         <FontAwesomeIcon icon={faMinusCircle} size={30} style={{color: 'white'}}/>
-                                    </TouchableOpacity>
+                                    </View>
     return (
-        
-        <Swipeable renderRightActions={() => deleteButton}>
-            <TouchableOpacity style={styles.container} onPress={() => console.log('button pressed')}>
+        <Suspense fallback={<Text>hi</Text>}>
+
+            <View style={styles.container}>
                 <View style={styles.companyNameWrapper}>
                     <Text style={styles.header}>{props.ticker}</Text>
                     <Text style={styles.subHeader}>{props.companyName}</Text>
-
                 </View>
 
                 <View style={styles.dayGraph}>
+                    <TestLineChart></TestLineChart>
                 </View>
                 
                 <View style={styles.numbersContainer}>
@@ -41,8 +44,9 @@ export const StockPreview: FC<StockProps> = (props) => {
                     </View>
                 </View>
 
-            </TouchableOpacity>
-        </Swipeable>
+            </View>
+        </Suspense>
+
     );
 };
 
@@ -54,7 +58,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'skyblue',
         shadowColor: 'white',
         height: 70,
-        padding: '1%',
         borderRadius: 15,
         
         
@@ -78,16 +81,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         height: "100%",
         width: '50%',
-        borderWidth: 3,
-        borderColor: '#f0fc',
     },
 
     numbersContainer: {
         width: '20%',
         height: '100%',
         alignItems: 'center',
-        borderWidth: 3,
-        borderColor: '#f0fc'
     },
 
     header: {
@@ -108,7 +107,7 @@ const styles = StyleSheet.create({
     },
 
     dependentBG: {
-        width: 40,
+        width: '100%',
         padding: '1%',
         paddingTop: '5%',
         paddingBottom: '5%',

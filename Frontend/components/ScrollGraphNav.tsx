@@ -1,5 +1,6 @@
 import React, {FC, useState, useEffect, useMemo} from 'react';
 import {View, Text, ScrollView, StyleSheet, SafeAreaView, Button, TouchableOpacity} from 'react-native';
+import TestLineChart from './TestLineChart';
 
 
 export const ScrollGraphNav: FC = () => {
@@ -7,14 +8,23 @@ export const ScrollGraphNav: FC = () => {
     const navOptions = useMemo(() => {
         return {
             oneDay: '1D',
-            pre: 'Pre-Market',
+            week: 'Week',
             post: 'Post-Market',
         }
     }, [])
 
 
     useEffect(() => {
+        let timeParam = '';
+        if (graphOption === '1D') {
+            timeParam = '1day'
+            
+        } else if (graphOption === 'Week') {
+            timeParam = '1week';
+        }
+        let res = fetch(`https://api.twelvedata.com/time_series?symbol=AAPL&interval=${timeParam}&apikey=d71724ce43e342f19aa946ce9d197a8a`).then(res => res.json()).then(res => {
 
+        })
     }, [graphOption])
 
 
@@ -26,13 +36,15 @@ export const ScrollGraphNav: FC = () => {
                 </View>
 
                 <View style={styles.navItem}>
-                    <Text style={graphOption === navOptions.pre ? {color: 'orange'}: {color: 'white'}} onPress={() => setGraphOption(navOptions.pre)} >{navOptions.pre}</Text>
+                    <Text style={graphOption === navOptions.week ? {color: 'orange'}: {color: 'white'}} onPress={() => setGraphOption(navOptions.week)} >{navOptions.week}</Text>
                 </View>
             
                 <View style={[styles.navItem, {borderRightWidth: 0}]}>
                     <Text style={graphOption === navOptions.post ? {color: 'orange'}: {color: 'white'}} onPress={() => setGraphOption(navOptions.post)} >{navOptions.post}</Text>
                 </View>
             </ScrollView>
+
+            {/* <TestLineChart></TestLineChart> */}
         </SafeAreaView>
     )
 }
