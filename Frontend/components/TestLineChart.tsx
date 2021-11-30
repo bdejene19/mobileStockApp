@@ -1,26 +1,26 @@
-import React from 'react'
+import React, {FC, useEffect, useState} from 'react';
 import { View, Text } from 'react-native';
 import { Chart, Line, Area, HorizontalAxis, VerticalAxis } from 'react-native-responsive-linechart'
-export default function TestLineChart() {
-    return (
 
+export interface dataPlot {
+    x: number,
+    y: number,
+}
+interface areaChartProps {
+    data: dataPlot[],
+    height: number | string | undefined,
+    width: number | string | undefined,
+    lineColor?: string | undefined,
+
+}
+export const TestLineChart: FC<areaChartProps> = (props) => {
+
+    return (
         <Chart
-            style={{ height: '100%', width: '100%', padding: 0, margin: 0, borderColor: 'white', borderWidth: 3,}}
-            data={[
-                { x: -2, y: 15 },
-                { x: -1, y: 10 },
-                { x: 0, y: 12 },
-                { x: 1, y: 7 },
-                { x: 2, y: 6 },
-                { x: 3, y: 3 },
-                { x: 4, y: 5 },
-                { x: 5, y: 8 },
-                { x: 6, y: 12 },
-                { x: 7, y: 14 },
-                { x: 8, y: 12 },
-                { x: 9, y: 13.5 },
-                { x: 10, y: 18 },
-            ]}
+            style={{ height: props.height, width: props.height, padding: 0, margin: 0,}}
+            data={props.data.map((dataPoint) => {
+                return {x: dataPoint.x, y: dataPoint.y}
+            })}
             padding={{ left: 10, bottom: 20, right: 10, top: 20 }}
             xDomain={{ min: -2, max: 10 }}
             yDomain={{ min: -4, max: 20 }}
