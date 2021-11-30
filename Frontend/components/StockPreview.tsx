@@ -1,12 +1,14 @@
 import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
+import 'react-native-gesture-handler';
+
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/core";
 import React, {FC, ReactNode, useState, Suspense} from "react";
 import {View, StyleSheet, Text,} from 'react-native';
-import 'react-native-gesture-handler';
 
-// import { Swipeable } from "react-native-gesture-handler";
-import TestLineChart from "./TestLineChart";
+import { Swipeable} from "react-native-gesture-handler";
+import {dataPlot, TestLineChart} from "./TestLineChart";
+import { useAnimatedGestureHandler } from "react-native-reanimated";
 
 export interface StockProps {
     ticker: string | null,
@@ -15,18 +17,24 @@ export interface StockProps {
     dayPercentMove: number | string,
     volume?: number,
     exchange?: string | null,
+    // graphData: dataPlot[],
 }
+
 
 
 
 export const StockPreview: FC<StockProps> = (props) => {
 
-    const deleteButton: ReactNode = <View style={styles.deleteWrapper}>
-                                        <FontAwesomeIcon icon={faMinusCircle} size={30} style={{color: 'white'}}/>
-                                    </View>
+    const DeleteButton: FC = () => {
+        return (
+            <View style={styles.deleteWrapper}>
+                <FontAwesomeIcon icon={faMinusCircle} size={30} style={{color: 'white'}}/>
+            </View>)
+    } 
     return (
-        <Suspense fallback={<Text>hi</Text>}>
+        <Swipeable  renderRightActions={() => <DeleteButton/>}>
 
+        <Suspense fallback={<Text>hi</Text>}>
             <View style={styles.container}>
                 <View style={styles.companyNameWrapper}>
                     <Text style={styles.header}>{props.ticker}</Text>
@@ -34,18 +42,47 @@ export const StockPreview: FC<StockProps> = (props) => {
                 </View>
 
                 <View style={styles.dayGraph}>
-                    <TestLineChart></TestLineChart>
+                    {/* <TestLineChart data={props.graphData.map(data => data)} height='100%' width='100%'></TestLineChart> */}
+                    {/* <TestLineChart data={  [  { x: -2.34, y: 15 },
+                { x: -1, y: 10 },
+                { x: 0, y: 12 },
+                { x: 1, y: 7 },
+                { x: 2, y: 6 },
+                { x: 3, y: 3 },
+                { x: 4, y: 5 },
+                { x: 5, y: 8 },
+                { x: 6, y: 12 },
+                { x: 7, y: 14 },
+                { x: 8, y: 12 },
+                { x: 9, y: 13.5 },
+                { x: 10, y: 18 },]} height='100%' width='100%'></TestLineChart> */}
+
                 </View>
+                {/* [  { x: -2, y: 15 },
+                { x: -1, y: 10 },
+                { x: 0, y: 12 },
+                { x: 1, y: 7 },
+                { x: 2, y: 6 },
+                { x: 3, y: 3 },
+                { x: 4, y: 5 },
+                { x: 5, y: 8 },
+                { x: 6, y: 12 },
+                { x: 7, y: 14 },
+                { x: 8, y: 12 },
+                { x: 9, y: 13.5 },
+                { x: 10, y: 18 },] */}
                 
                 <View style={styles.numbersContainer}>
                     <Text style={styles.stockPrice}>{props.currentPrice}</Text>
-                    <View style={styles.dependentBG}>
-                        <Text>{props.dayPercentMove}%</Text>
+                    <View style={[styles.dependentBG, props.dayPercentMove < 0 ? {backgroundColor: 'red'} : {backgroundColor: 'green'}]}>
+                        <Text>{(props.dayPercentMove)}%</Text>
                     </View>
                 </View>
 
             </View>
         </Suspense>
+        </Swipeable>
+
 
     );
 };
@@ -107,7 +144,7 @@ const styles = StyleSheet.create({
     },
 
     dependentBG: {
-        width: '100%',
+        width: '80%',
         padding: '1%',
         paddingTop: '5%',
         paddingBottom: '5%',

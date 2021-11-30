@@ -3,6 +3,10 @@ import { ActionType } from "../actionTypes";
 
 export type Action = addStock | deleteStock;
 
+
+// for api structure => can only have 8 connections in WS.send() symbol parameters.
+// therefore my watchlist state should be list of tickers
+// then in homepage function => map over them to link to websocket
 export default function(state: watchlistState = initialState, action: Action) {
     // check the action type to determine what action needs to be taken
     switch (action.type) {
@@ -20,8 +24,10 @@ export default function(state: watchlistState = initialState, action: Action) {
                     }
         
                     if (stockAlreadyAdded = false) {
+
                         return {
-                            myList: [...state.myList]
+                            // list of tickers
+                            myList: [...state.myList, action.payload.ticker]
                         }
                     } else {
                         return null;
@@ -72,13 +78,28 @@ export default function(state: watchlistState = initialState, action: Action) {
 
 }
 
+// design interface for my individual stock item
+// needs 2 objects to handle 2 different events => 1) immediate real time data      2) advanced stock specific data (for Full Stock View component) 
+interface stockItem {
+    previewContent: {
+        ticker: string;
+        currPrice: number | undefined,
+    },
+ 
+    tickerContent: {
+        stockName: string,
+    }
+}
 export interface watchlistState {
     // for type script, need to define what you expect to have array of => to determine what you expect your array to be made of, write it in front
     myList: Stock[] | null,   
 }
 // initial items will be apple
 let testObj = new Stock('Apple', 'AAPL', 0, 0, 0, 0)
+// let testObj2 = new Stock('Apple', 'RY', 0, 0, 0, 0)
+
 testObj.getDayQuote();
+
 const initialState = {
     myList: [testObj],
 }

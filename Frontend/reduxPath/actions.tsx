@@ -15,12 +15,12 @@ export const toggleLargeText = (isTextLarge: boolean) => ({
     payload: isTextLarge,
 })
 
-export const addToWatchlist = (addStock: Stock) => ({
+export const addToWatchlist = (addStock: String) => ({
     type: ActionType.ADD_TO_WATCHLIST,
     payload: {addStock},
 })
 
-export const deleteOffWatchList = (deleteStock: Stock) => ({
+export const deleteOffWatchList = (deleteStock: String) => ({
     type: ActionType.DELETE_OFF_WATCHLIST,
     payload: {deleteStock},
 })
