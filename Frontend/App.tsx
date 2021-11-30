@@ -13,19 +13,10 @@
  * Terminal 1) npx react-native start (to start metro bundler => similar to webpack, but for mobile)
  * Terminal 2) npx react-native run-ios (to run app on Xcode simulator/emulator)
  */
-import React from 'react';
-// import 'react-native-gesture-handler';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
 
-import { createStore } from 'redux';
+import React from 'react';
+import 'react-native-gesture-handler';
+
 import { Provider } from 'react-redux';
 import Main from './pages/Main';
 import store from './reduxPath/store'
