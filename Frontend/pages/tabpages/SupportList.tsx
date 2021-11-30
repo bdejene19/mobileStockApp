@@ -1,8 +1,8 @@
 import React, {FC, useEffect, useState} from 'react'
-import { View, Text, StyleSheet, SectionList, Linking, Button} from 'react-native';
+import { View, Text, StyleSheet, SectionList, Linking, Button, ScrollView} from 'react-native';
 import { connect } from 'react-redux';
 import { toggleStates } from '../../reduxPath/reducers/toggles';
-import { GlobalDarkStyles, GlobalLightStyles, largeFontSizes, regularFontSizes } from './Settings';
+import { GlobalDarkStyles, GlobalLightStyles, largeFontSizes, regularFontSizes } from '../globalstyles';
 import { useDarkMode, useLargeText } from '../mainPageFunctions';
 
 
@@ -26,28 +26,45 @@ const SupportList: FC<supportListProps> = (props) => {
         )
     }
 
-    return (
-        // <ScrollView style={stylesDark.screenContainer}>
-            <View  style={props.isDark ? GlobalDarkStyles.screenBgColor : GlobalLightStyles.screenBgColor}>
-                <Text style={[currentStyle.contentText, fontSize.contentTextSize]}>Due to TwelveData's free API tier, not all tickers are available for live-streaming data.</Text>
+    const SectionHeader: FC = () => {
+        return (
+            <View>
+                 <Text style={[currentStyle.contentText, fontSize.contentTextSize]}>Due to TwelveData's free API tier, not all tickers are available for live-streaming data.</Text>
                 <Text style={[currentStyle.contentText, fontSize.contentTextSize, {paddingTop: '5%'}]}>Here is a supported list of tickers:</Text>
-                <SectionList scrollEnabled={false} style={fontSize.sectionListContainer} sections={supportedTickers} renderItem={({item}) => <BulletPoints listItem={item}></BulletPoints>} renderSectionHeader={({section: data}) => {
-                    return (
-                        <View>
-                            <Text style={[currentStyle.sectionHeader, fontSize.contentTextSize]}>{data.title}</Text>
-                            <View style={currentStyle.hr}></View>
-                        </View>
+            </View>  
+        )
+    }
 
-                    )}}>
-                </SectionList>
-                <Text style={[currentStyle.contentText, fontSize.contentTextSize, {paddingBottom: '5%'}]}>For a more comprehensive list that TwelveData's free tier offers, visit:</Text>
+    const SectionFooter: FC = () => {
+        return (
+            <View>
+                <Text style={[currentStyle.contentText, fontSize.contentTextSize, {paddingBottom: '5%', paddingTop: '3%'}]}>For a more comprehensive list that TwelveData's free tier offers, visit:</Text>
                 <View style={[currentStyle.learnMore, fontSize.contentTextSize]}>
                     <Button onPress={() => Linking.openURL('https://support.twelvedata.com/en/articles/5335783-trial')} title='Learn More'></Button>
                 </View>
-                
 
             </View>
-        // </ScrollView>
+        )
+    }
+
+    return (
+        <View  style={props.isDark ? GlobalDarkStyles.screenBgColor : GlobalLightStyles.screenBgColor}>
+            {/* <Text style={[currentStyle.contentText, fontSize.contentTextSize]}>Due to TwelveData's free API tier, not all tickers are available for live-streaming data.</Text>
+            <Text style={[currentStyle.contentText, fontSize.contentTextSize, {paddingTop: '5%'}]}>Here is a supported list of tickers:</Text> */}
+            <SectionList scrollEnabled={true} style={[fontSize.sectionListContainer, {minHeight: '100%'}]} ListHeaderComponent={SectionHeader} ListFooterComponent={SectionFooter} sections={supportedTickers} renderItem={({item}) => <BulletPoints listItem={item}></BulletPoints>} renderSectionHeader={({section: data}) => {
+                return (
+                    <View>
+                        <Text style={[currentStyle.sectionHeader, fontSize.contentTextSize]}>{data.title}</Text>
+                        <View style={currentStyle.hr}></View>
+                    </View>
+
+                )}}>
+            </SectionList>
+            
+
+            
+
+        </View>
     )
 }
 
@@ -99,7 +116,7 @@ const stylesDark = StyleSheet.create({
     learnMore: {
         backgroundColor: 'snow',
         color: 'orange',
-        height: '10%',
+        height: '40%',
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',

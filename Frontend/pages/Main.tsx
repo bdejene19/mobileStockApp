@@ -1,14 +1,10 @@
-import React, {FC, useEffect, useState} from 'react'
-import { View, Text } from 'react-native';
+import React, {FC, useEffect, useState} from 'react';
 import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import Home  from './tabpages/Home';
 import { RootTabParamList,TabRoutes } from '../routes';
-import { faHome, faCog, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import SupportList from './tabpages/SupportList';
 import Settings  from './tabpages/Settings';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { toggleStates } from '../reduxPath/reducers/toggles';
 import { connect } from 'react-redux';
 import { handleTabIcon } from './mainPageFunctions';

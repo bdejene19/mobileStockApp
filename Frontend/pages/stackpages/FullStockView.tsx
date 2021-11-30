@@ -7,7 +7,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList, RootTabParamList, StackRoutes, TabRoutes} from '../../routes';
 import { ScrollGraphNav } from '../../components/ScrollGraphNav';
 import { useNavigation } from '@react-navigation/core';
-import { GlobalDarkStyles, GlobalLightStyles } from '../tabpages/Settings';
+import { GlobalDarkStyles, GlobalLightStyles, largeFontSizes, regularFontSizes } from '../globalstyles';
 import { connect } from 'react-redux';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import { toggleStates } from '../../reduxPath/reducers/toggles';

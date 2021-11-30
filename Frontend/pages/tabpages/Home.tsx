@@ -1,20 +1,22 @@
+
 import React, {FC, useEffect, useState, useRef, createContext, Suspense} from 'react';
+
 import {View, Text, StyleSheet, Button} from 'react-native';
 import {StockPreview, StockProps} from '../../components/StockPreview';
 import { SearchBar } from '../../components/SearchBar';
 import { RootTabParamList, TabRoutes, StackRoutes, RootStackParamList } from '../../routes';
-import {useNavigation} from '@react-navigation/native';
 import { NativeStackScreenProps} from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import  FullStockView  from '../stackpages/FullStockView';
 import { createNativeStackNavigator} from '@react-navigation/native-stack';
-import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { GlobalDarkStyles, GlobalLightStyles } from './Settings';
+import { GlobalDarkStyles, GlobalLightStyles, largeFontSizes, regularFontSizes } from '../globalstyles';
 import { toggleStates } from '../../reduxPath/reducers/toggles';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import { useDarkMode } from '../mainPageFunctions';
 import { connect } from 'react-redux';
 import { watchlistState } from '../../reduxPath/reducers/watchlistHandles';
+import { fullScreenNavOptions, navigationOptions } from '../navStyleOptions';
+import Stock from '../../reduxPath/reducers/stockClass';
+
 
 
 
@@ -25,9 +27,10 @@ type homeScreenProps = NativeStackScreenProps<RootStackParamList, StackRoutes.Wa
 // homepage component is a screen. this is defined through its type
 // pass navigation deconstruction to allow navigation to separate pages
 
-const MyContext = createContext({});
 interface homeComponentProps extends toggleStates, watchlistState {}
 const Home: FC<homeComponentProps> = (props) => {
+    let MyContext = createContext<watchlistState>({myList: props.myList});
+
     const RootStack = createNativeStackNavigator<RootStackParamList>();
     let socket = useRef<null | WebSocket>(null);
     
@@ -46,9 +49,8 @@ const Home: FC<homeComponentProps> = (props) => {
             <View style={currentStyle.screenBgColor}>
                 <SearchBar></SearchBar>
                 {props.myList?.map(stock => {
-                    let content= stock.getDayQuote();
-                    console.log('my content: ',content);
-                    return <StockPreview ticker={stock.ticker} companyName={stock.stockName}  currentPrice={stock.currentPrice} dayPercentMove={4}></StockPreview>
+                    stock.setCurrentPrice(stockContent.currentPrice);
+                    return  <StockPreview key={stock.ticker} ticker={stock.ticker} companyName={stock.getStockName()}  currentPrice={stock.getCurrentPrice()} dayPercentMove={stock.getDayPercentMove() }></StockPreview>
                 } )}
                 {/* <StockPreview ticker={stockContent.ticker} companyName="APPLE INC."  currentPrice={stockContent.currentPrice} dayPercentMove={3}></StockPreview> */}
                 <Button title='test Nav' onPress={() => navigation.navigate(StackRoutes.FullStock)}></Button>
@@ -58,7 +60,7 @@ const Home: FC<homeComponentProps> = (props) => {
         )
     }
 
-
+    const [allPrices, setSubscribedPrices] = useState({prices: [{}]});
     useEffect(() => {
         // websockets pre-built into latest react native=> therefore dont need to rely on 3rd party libraries
         // NOTE: for react-native && websockets => need to use ip address and wss
@@ -67,16 +69,20 @@ const Home: FC<homeComponentProps> = (props) => {
         
         let ws = socket.current;
 
-        
-        ws.onopen = () => {
-            console.log('connected')
-            ws.send(`{
-                "action": "subscribe", 
-                "params": {
-                  "symbols": "AAPL"
-                }
-              }`);
-        };
+        let followedTickers = props.myList?.map(item => item.ticker).join(',');
+
+        ws.onopen = async  () => {
+            console.log('connected');
+                ws.send(`{
+                    "action": "subscribe", 
+                    "params": {
+                    "symbols": "${followedTickers}"
+                    }
+                }`);
+                let res = await ((await fetch(`https://api.twelvedata.com/quote?symbol=${followedTickers}&apikey=d71724ce43e342f19aa946ce9d197a8a`)).json());
+        };  
+
+        // initial stockobject => getting immediate data => rest of data will be determined by stock quote API call
         let returnedObject: StockProps = {
             ticker: null,
             currentPrice: 0,
@@ -85,16 +91,26 @@ const Home: FC<homeComponentProps> = (props) => {
             volume: 0,
             exchange: null,
         }
+
+        
         ws.onmessage = (msg) => {
             let stockObject = JSON.parse(msg.data);
+            let currPrice = stockObject.price;                
+            
+            // generating initial object
+
+            if (typeof(stockObject.price) === 'number') {
+                currPrice = currPrice.toFixed(2);
+            }
             returnedObject = {
                 ticker: stockObject.symbol,
-                currentPrice: stockObject.price,
+                currentPrice: currPrice,
                 dayPercentMove: stockObject.price,
                 volume: stockObject.day_volume,
                 exchange: stockObject.exchange,  
                 companyName: stockObject.ticker,  
             }  
+
             
             return returnedObject
             
@@ -102,8 +118,15 @@ const Home: FC<homeComponentProps> = (props) => {
         }  
         
         let checkPrices = setInterval(() => {
+            // returnedObject['currentPrice'] = returnedObject.currentPrice
+            setSubscribedPrices({prices: [...allPrices.prices, returnedObject]})
+            console.log(allPrices.prices)
+            // console.log('this is all my prices: ', allPrices);
+            // setSubscribedPrices([...allPrices, {ticker: returnedObject['ticker'], currPrice: returnedObject.currentPrice}])
+            // setSubscribedPrices({price: {returnedObject['ticker']: returnedObject['currentPrice']}})
             setStockContent(returnedObject);
-        }, 10000)
+            // console.log(stockContent)
+        }, 3000)
     
         ws.onclose = () => clearInterval(checkPrices);
 
@@ -129,31 +152,4 @@ const mapStateToProps = (state: any):any => {
 }
 export default connect(mapStateToProps)(Home);
 
-const navigationOptions: NativeStackNavigationOptions = {
-    headerStyle: {
-      backgroundColor: 'black',
-    },
-    headerShown: false,
-    headerShadowVisible: false,
-    headerTitleStyle: {
-      fontWeight: '700',
-      color: 'white',
-      fontSize: 28,
-    },
-    headerBackTitleVisible: false,
-    headerTitleAlign: 'left',
-    headerTintColor:'white',       
-}
 
-const fullScreenNavOptions: NativeStackNavigationOptions = {
-    headerShown: true, 
-    headerStyle: {
-        backgroundColor: 'maroon',
-    },
-
-    headerBackTitleVisible: false,
-
-    headerTitleStyle: {
-        color: 'white',
-    }
-}
