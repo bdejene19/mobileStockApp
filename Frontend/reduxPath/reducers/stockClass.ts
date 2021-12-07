@@ -1,4 +1,4 @@
-import { dataPlot } from "../../components/TestLineChart";
+import { dataPlot } from "../../components/AreaChart";
 
 export default class Stock {
     stockName: string;
@@ -82,7 +82,7 @@ export default class Stock {
         return this.dollarChange;
     }
     getDayPercentMove():number {
-        this.percentageMove =  parseFloat((this.currentPrice / this.openPrice).toFixed(2))
+        this.percentageMove =  parseFloat((((this.currentPrice - this.openPrice )/ this.openPrice) * 100).toFixed(2)) 
         return this.percentageMove;
     }
     
