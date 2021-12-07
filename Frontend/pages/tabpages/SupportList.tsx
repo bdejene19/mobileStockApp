@@ -48,6 +48,7 @@ const SupportList: FC<supportListProps> = (props) => {
     }
 
     return (
+        
         <View  style={props.isDark ? GlobalDarkStyles.screenBgColor : GlobalLightStyles.screenBgColor}>
             {/* <Text style={[currentStyle.contentText, fontSize.contentTextSize]}>Due to TwelveData's free API tier, not all tickers are available for live-streaming data.</Text>
             <Text style={[currentStyle.contentText, fontSize.contentTextSize, {paddingTop: '5%'}]}>Here is a supported list of tickers:</Text> */}

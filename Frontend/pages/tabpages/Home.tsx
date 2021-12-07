@@ -3,7 +3,7 @@ import React, {FC, useEffect, useState, useRef, createContext, Suspense} from 'r
 
 import {View, Text, StyleSheet, Button} from 'react-native';
 import {StockPreview, StockProps} from '../../components/StockPreview';
-import { SearchBar } from '../../components/SearchBar';
+import  SearchBar  from '../../components/SearchBar';
 import { RootTabParamList, TabRoutes, StackRoutes, RootStackParamList } from '../../routes';
 import { NativeStackScreenProps} from '@react-navigation/native-stack';
 import  FullStockView  from '../stackpages/FullStockView';
@@ -39,6 +39,7 @@ const Home: FC<homeComponentProps> = (props) => {
                                                                     companyName: null,
                                                                     ticker: null,
                                                                     dayPercentMove: 0,
+                                                                    graphData: [],
 
                                                                 });
     let currentStyle = useDarkMode(props.isDark, GlobalDarkStyles, GlobalLightStyles);
@@ -48,9 +49,12 @@ const Home: FC<homeComponentProps> = (props) => {
             
             <View style={currentStyle.screenBgColor}>
                 <SearchBar></SearchBar>
-                {props.myList?.map(stock => {
+                {props.myList?.map((stock, index)=> {
                     stock.setCurrentPrice(stockContent.currentPrice);
-                    return  <StockPreview key={stock.ticker} ticker={stock.ticker} companyName={stock.getStockName()}  currentPrice={stock.getCurrentPrice()} dayPercentMove={stock.getDayPercentMove() }></StockPreview>
+                    console.log((new Date().getSeconds()))
+                    stock.addDataPointToGraphData({x: 2.343432, y: stockContent.currentPrice})
+                    console.log(stock.openPrice);
+                    return  <StockPreview key={stock.ticker} ticker={stock.ticker} companyName={stock.getStockName()}  currentPrice={stock.getCurrentPrice()} dayPercentMove={stock.getDayDollarMove()} graphData={stock.getGraphData()}></StockPreview>
                 } )}
                 {/* <StockPreview ticker={stockContent.ticker} companyName="APPLE INC."  currentPrice={stockContent.currentPrice} dayPercentMove={3}></StockPreview> */}
                 <Button title='test Nav' onPress={() => navigation.navigate(StackRoutes.FullStock)}></Button>
@@ -59,6 +63,16 @@ const Home: FC<homeComponentProps> = (props) => {
     
         )
     }
+    let returnedObject: StockProps = {
+        ticker: null,
+        currentPrice: 0,
+        companyName: null,
+        dayPercentMove: 0,
+        volume: 0,
+        graphData: [],
+        exchange: null,
+    }
+
 
     const [allPrices, setSubscribedPrices] = useState({prices: [{}]});
     useEffect(() => {
@@ -70,9 +84,9 @@ const Home: FC<homeComponentProps> = (props) => {
         let ws = socket.current;
 
         let followedTickers = props.myList?.map(item => item.ticker).join(',');
-
         ws.onopen = async  () => {
             console.log('connected');
+
                 ws.send(`{
                     "action": "subscribe", 
                     "params": {
@@ -83,14 +97,7 @@ const Home: FC<homeComponentProps> = (props) => {
         };  
 
         // initial stockobject => getting immediate data => rest of data will be determined by stock quote API call
-        let returnedObject: StockProps = {
-            ticker: null,
-            currentPrice: 0,
-            companyName: null,
-            dayPercentMove: 0,
-            volume: 0,
-            exchange: null,
-        }
+        
 
         
         ws.onmessage = (msg) => {
@@ -109,24 +116,26 @@ const Home: FC<homeComponentProps> = (props) => {
                 volume: stockObject.day_volume,
                 exchange: stockObject.exchange,  
                 companyName: stockObject.ticker,  
+                graphData: []
             }  
 
-            
+
             return returnedObject
             
            
         }  
         
+        // NOTE: set interval in my useEffect causes entire page refresh, not just stock preview
         let checkPrices = setInterval(() => {
+
             // returnedObject['currentPrice'] = returnedObject.currentPrice
             setSubscribedPrices({prices: [...allPrices.prices, returnedObject]})
-            console.log(allPrices.prices)
             // console.log('this is all my prices: ', allPrices);
             // setSubscribedPrices([...allPrices, {ticker: returnedObject['ticker'], currPrice: returnedObject.currentPrice}])
             // setSubscribedPrices({price: {returnedObject['ticker']: returnedObject['currentPrice']}})
             setStockContent(returnedObject);
             // console.log(stockContent)
-        }, 3000)
+        },5000)
     
         ws.onclose = () => clearInterval(checkPrices);
 
