@@ -7,7 +7,7 @@ import React, {FC, ReactNode, useState, Suspense} from "react";
 import {View, StyleSheet, Text,} from 'react-native';
 
 import { Swipeable} from "react-native-gesture-handler";
-import {dataPlot, TestLineChart} from "./TestLineChart";
+import {dataPlot, AreaChart} from "./AreaChart";
 import { useAnimatedGestureHandler } from "react-native-reanimated";
 
 export interface StockProps {
@@ -17,7 +17,7 @@ export interface StockProps {
     dayPercentMove: number | string,
     volume?: number,
     exchange?: string | null,
-    // graphData: dataPlot[],
+    graphData: dataPlot[],
 }
 
 
@@ -42,23 +42,9 @@ export const StockPreview: FC<StockProps> = (props) => {
                 </View>
 
                 <View style={styles.dayGraph}>
-                    {/* <TestLineChart data={props.graphData.map(data => data)} height='100%' width='100%'></TestLineChart> */}
-                    {/* <TestLineChart data={  [  { x: -2.34, y: 15 },
-                { x: -1, y: 10 },
-                { x: 0, y: 12 },
-                { x: 1, y: 7 },
-                { x: 2, y: 6 },
-                { x: 3, y: 3 },
-                { x: 4, y: 5 },
-                { x: 5, y: 8 },
-                { x: 6, y: 12 },
-                { x: 7, y: 14 },
-                { x: 8, y: 12 },
-                { x: 9, y: 13.5 },
-                { x: 10, y: 18 },]} height='100%' width='100%'></TestLineChart> */}
-
-                </View>
-                {/* [  { x: -2, y: 15 },
+                    {/* <AreaChart data={props.graphData.map(data => data)} height='100%' width='100%'></AreaChart> */}
+                    <AreaChart data={props.graphData} height='100%' width='100%' xAxisVisible={true} yAxisVisible={false}></AreaChart>
+                    {/* [  { x: -2.34, y: 15 },
                 { x: -1, y: 10 },
                 { x: 0, y: 12 },
                 { x: 1, y: 7 },
@@ -71,6 +57,7 @@ export const StockPreview: FC<StockProps> = (props) => {
                 { x: 8, y: 12 },
                 { x: 9, y: 13.5 },
                 { x: 10, y: 18 },] */}
+                </View>
                 
                 <View style={styles.numbersContainer}>
                     <Text style={styles.stockPrice}>{props.currentPrice}</Text>

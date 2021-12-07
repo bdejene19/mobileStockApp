@@ -1,6 +1,6 @@
 import React, {FC, useState, useEffect, useMemo} from 'react';
 import {View, Text, ScrollView, StyleSheet, SafeAreaView, Button, TouchableOpacity} from 'react-native';
-import TestLineChart from './TestLineChart';
+import {AreaChart} from './AreaChart';
 
 
 export const ScrollGraphNav: FC = () => {
