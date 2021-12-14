@@ -24,7 +24,7 @@ export const AreaChart: FC<areaChartProps> = (props) => {
         axis:  { 
             visible: props.yAxisVisible, 
             stroke: {
-                dashArray: [3]
+                dashArray: [4]
             }
         }
     }
