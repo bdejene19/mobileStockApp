@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import { watchlistState } from '../../reduxPath/reducers/watchlistHandles';
 import { fullScreenNavOptions, navigationOptions } from '../navStyleOptions';
 import Stock from '../../reduxPath/reducers/stockClass';
+import { SearchProvider } from '../../components/SearchProvider';
 
 
 
@@ -48,7 +49,8 @@ const Home: FC<homeComponentProps> = (props) => {
         return (
             
             <View style={currentStyle.screenBgColor}>
-                <SearchBar></SearchBar>
+                <SearchProvider/>
+                {/* <SearchBar></SearchBar> */}
                 {props.myList?.map((stock, index)=> {
                     stock.setCurrentPrice(stockContent.currentPrice);
                     console.log((new Date().getSeconds()))
@@ -126,18 +128,18 @@ const Home: FC<homeComponentProps> = (props) => {
         }  
         
         // NOTE: set interval in my useEffect causes entire page refresh, not just stock preview
-        let checkPrices = setInterval(() => {
+        // let checkPrices = setInterval(() => {
 
-            // returnedObject['currentPrice'] = returnedObject.currentPrice
-            setSubscribedPrices({prices: [...allPrices.prices, returnedObject]})
-            // console.log('this is all my prices: ', allPrices);
-            // setSubscribedPrices([...allPrices, {ticker: returnedObject['ticker'], currPrice: returnedObject.currentPrice}])
-            // setSubscribedPrices({price: {returnedObject['ticker']: returnedObject['currentPrice']}})
-            setStockContent(returnedObject);
-            // console.log(stockContent)
-        },5000)
+        //     // returnedObject['currentPrice'] = returnedObject.currentPrice
+        //     setSubscribedPrices({prices: [...allPrices.prices, returnedObject]})
+        //     // console.log('this is all my prices: ', allPrices);
+        //     // setSubscribedPrices([...allPrices, {ticker: returnedObject['ticker'], currPrice: returnedObject.currentPrice}])
+        //     // setSubscribedPrices({price: {returnedObject['ticker']: returnedObject['currentPrice']}})
+        //     setStockContent(returnedObject);
+        //     // console.log(stockContent)
+        // },5000)
     
-        ws.onclose = () => clearInterval(checkPrices);
+        // ws.onclose = () => clearInterval(checkPrices);
 
         ws.onerror = e => console.log('my error: ', e);
     }, [])

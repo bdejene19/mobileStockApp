@@ -1,24 +1,32 @@
-import React, { FC, useState} from 'react';
+import React, { FC, useContext, useEffect, useState} from 'react';
 import {View, TextInput, StyleSheet, NativeSyntheticEvent, TextInputChangeEventData, FetchResult} from 'react-native';
 import { connect } from 'react-redux';
 import { useDarkMode } from '../pages/mainPageFunctions';
 import { toggleStates } from '../reduxPath/reducers/toggles';
+import { SearchContentProvider } from './SearchProvider';
 
 
 
 const SearchBar: FC<toggleStates> = (props) => {
-    const [searchResponse, setAPIResponse] = useState();
-    const [query, setQuery] = useState("");
-    // const colorTheme = useDarkMode()
+    // const [searchResponse, setAPIResponse] = useState();
+    // const [query, setQuery] = useState("");
+    // const handleChange = async (search: string) => {
+    //     let apiRes = await (await fetch(`https://api.twelvedata.com/stocks?symbol:${query}`)).json();
+    //     setAPIResponse(apiRes); 
+    // }
+
+    // custom hook to determine app colour from dark mode toggle
     const colorTheme = useDarkMode(props.isDark, darkStyles, lightStyles)
-    const handleChange = async (search: string) => {
-        let apiRes = await (await fetch(`https://api.twelvedata.com/stocks?symbol:${query}`)).json();
-        setAPIResponse(apiRes); 
-    }
+
+    // destructured assests from  SearchProvider Context
+    const { searchItem, setItemSearch, apiResponse, setApiResponse } = useContext(SearchContentProvider);
+   
+    
     return (
-        <View style={[colorTheme.searchContainer, {marginTop: '0%', marginBottom: '2%'}]}>
+        <View>
             {/* <SearchIcon style={{color: 'white'}}/> */}
-            <TextInput placeholder='Search' placeholderTextColor={props.isDark ? 'white' : '#0072CE'} value={query} onChange={() => handleChange(query)} onChangeText={setQuery} style={darkStyles.inputSearch}></TextInput>
+            {/* <TextInput placeholder='Search' placeholderTextColor={props.isDark ? 'white' : '#0072CE'} value={searchItem} onChange={() => setApiResponse(`${searchItem}`)} onChangeText={setItemSearch} style={colorTheme.inputSearch}></TextInput> */}
+            <TextInput  style={colorTheme.inputSearch} placeholder='Search' placeholderTextColor='white' onChange={() => console.log('hello')}/>
         </View>
     )
 }
@@ -34,7 +42,6 @@ const mapStateToProps = (state: any):any => {
 }
 
 export default connect(mapStateToProps)(SearchBar)
-
 
 const darkStyles = StyleSheet.create({
     searchContainer: {
