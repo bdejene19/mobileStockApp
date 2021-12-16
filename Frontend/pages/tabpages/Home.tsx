@@ -3,7 +3,6 @@ import React, {FC, useEffect, useState, useRef, createContext, Suspense} from 'r
 
 import {View, Text, StyleSheet, Button} from 'react-native';
 import {StockPreview, StockProps} from '../../components/StockPreview';
-import  SearchBar  from '../../components/SearchBar';
 import { RootTabParamList, TabRoutes, StackRoutes, RootStackParamList } from '../../routes';
 import { NativeStackScreenProps} from '@react-navigation/native-stack';
 import  FullStockView  from '../stackpages/FullStockView';
@@ -50,7 +49,6 @@ const Home: FC<homeComponentProps> = (props) => {
             
             <View style={currentStyle.screenBgColor}>
                 <SearchProvider/>
-                {/* <SearchBar></SearchBar> */}
                 {props.myList?.map((stock, index)=> {
                     stock.setCurrentPrice(stockContent.currentPrice);
                     console.log((new Date().getSeconds()))

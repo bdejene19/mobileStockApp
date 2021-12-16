@@ -1,10 +1,46 @@
 import React, {createContext, useState, useEffect, FC} from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TextInput } from 'react-native'
 import { SearchBar } from 'react-native-screens';
+import { useSelector } from 'react-redux';
 import { useDarkMode } from '../pages/mainPageFunctions';
+import { toggleStates } from '../reduxPath/reducers/toggles';
+import { SearchResponseModal } from './SearchResponseModal';
 
 
 
+
+
+export const SearchProvider: FC = () => {
+    const [apiResponse, setGetResponse] = useState(SearchContextDefaultValaues.apiResponse);
+    const [searchItem, setQuery] = useState(SearchContextDefaultValaues.searchItem);
+
+    const setItemSearch = (newSearch: string) => setQuery(newSearch);
+    const setApiResponse = async (itemSearched: string) => {
+        let res = (await (await fetch(`https://api.twelvedata.com/symbol_search?symbol=${itemSearched}`)).json())
+        setGetResponse(res.data);
+        console.log(res.data);
+        return res.data;
+    }
+
+    const {isDark, isLarge} = useSelector((state: any):toggleStates => state.toggleSwitches)
+
+    const colorTheme = useDarkMode(isDark, darkStyles, lightStyles);
+    useEffect(() => {
+        // handleChange(query).then(e => setAPIResponse(e));
+        // setApiResponse('ap')
+    }, [searchItem])
+    return (
+        <SearchContentProvider.Provider value={{setItemSearch, searchItem, apiResponse, setApiResponse}}>
+            <View style={[colorTheme.searchContainer, {marginTop: '0%', marginBottom: '2%'}]}>
+                <TextInput placeholder='Search' placeholderTextColor={isDark ? 'white' : '#0072CE'} value={searchItem} onChange={() => setApiResponse(`${searchItem}`)} onChangeText={setItemSearch} style={colorTheme.inputSearch}></TextInput>
+
+            </View>
+            {/* {searchItem === "" ? null : <SearchResponseModal/>} */}
+            <SearchResponseModal/>
+
+        </SearchContentProvider.Provider>
+    )
+}
 interface SearchContext {
     searchItem: string,
     setItemSearch: (itemSearched: string) => void,
@@ -20,37 +56,6 @@ export const SearchContextDefaultValaues: SearchContext = {
 }
 
 export const SearchContentProvider = createContext<SearchContext>(SearchContextDefaultValaues)
-
-export const SearchProvider: FC = () => {
-    const [apiResponse, setGetResponse] = useState(SearchContextDefaultValaues.apiResponse);
-    const [searchItem, setQuery] = useState(SearchContextDefaultValaues.searchItem);
-
-    // const handleChange = async (search: string) => {
-    //     let apiRes = await (await fetch(`https://api.twelvedata.com/stocks?symbol:${query}`)).json();
-    //     return apiRes
-    // }
-    const setItemSearch = (newSearch: string) => setQuery(newSearch);
-    const setApiResponse = async (itemSearched: string) => {
-        let res = (await (await fetch(`https://api.twelvedata.com/symbol_search?symbol=${itemSearched}`)).json())
-        setGetResponse(res.data);
-        console.log(res.data);
-        return res.data;
-    }
-
-    const colorTheme = useDarkMode(false, darkStyles, lightStyles);
-    useEffect(() => {
-        // handleChange(query).then(e => setAPIResponse(e));
-        // setApiResponse('ap')
-    }, [searchItem])
-    return (
-        <SearchContentProvider.Provider value={{setItemSearch, searchItem, apiResponse, setApiResponse}}>
-            <View style={[colorTheme.searchContainer, {marginTop: '0%', marginBottom: '2%'}]}>
-                <SearchBar/>
-            </View>
-
-        </SearchContentProvider.Provider>
-    )
-}
 
 
 const darkStyles = StyleSheet.create({
