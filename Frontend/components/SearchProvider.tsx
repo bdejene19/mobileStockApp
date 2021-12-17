@@ -1,5 +1,5 @@
-import React, {createContext, useState, useEffect, FC} from 'react'
-import { View, Text, StyleSheet, TextInput } from 'react-native'
+import React, {createContext, useState, useEffect, FC, useRef} from 'react'
+import { View, Text, StyleSheet, TextInput, Animated } from 'react-native'
 import { SearchBar } from 'react-native-screens';
 import { useSelector } from 'react-redux';
 import { useDarkMode } from '../pages/mainPageFunctions';
@@ -11,6 +11,9 @@ import { SearchResponseModal } from './SearchResponseModal';
 
 
 export const SearchProvider: FC = () => {
+
+    // Defining context of what will be passed down to children
+    // defining search and api response
     const [apiResponse, setGetResponse] = useState(SearchContextDefaultValaues.apiResponse);
     const [searchItem, setQuery] = useState(SearchContextDefaultValaues.searchItem);
 
@@ -22,18 +25,23 @@ export const SearchProvider: FC = () => {
         return res.data;
     }
 
-    const {isDark, isLarge} = useSelector((state: any):toggleStates => state.toggleSwitches)
+    // defining modal movement depending on search focus
+    const [isModalOpen, setSearchModal] = useState<boolean>(SearchContextDefaultValaues.isModalOpen);
 
+
+
+    // redux for global state changes
+    const {isDark, isLarge} = useSelector((state: any):toggleStates => state.toggleSwitches)
     const colorTheme = useDarkMode(isDark, darkStyles, lightStyles);
+
     useEffect(() => {
         // handleChange(query).then(e => setAPIResponse(e));
         // setApiResponse('ap')
     }, [searchItem])
     return (
-        <SearchContentProvider.Provider value={{setItemSearch, searchItem, apiResponse, setApiResponse}}>
+        <SearchContentProvider.Provider value={{setItemSearch, searchItem, apiResponse, setApiResponse, isModalOpen}}>
             <View style={[colorTheme.searchContainer, {marginTop: '0%', marginBottom: '2%'}]}>
-                <TextInput placeholder='Search' placeholderTextColor={isDark ? 'white' : '#0072CE'} value={searchItem} onChange={() => setApiResponse(`${searchItem}`)} onChangeText={setItemSearch} style={colorTheme.inputSearch}></TextInput>
-
+                <TextInput placeholder='Search' placeholderTextColor={isDark ? 'white' : '#0072CE'} value={searchItem} onChange={() => setApiResponse(`${searchItem}`)} onChangeText={setItemSearch} style={colorTheme.inputSearch} onFocus={() => setSearchModal(true)} onBlur={() => setSearchModal(false)}></TextInput>
             </View>
             {/* {searchItem === "" ? null : <SearchResponseModal/>} */}
             <SearchResponseModal/>
@@ -46,6 +54,7 @@ interface SearchContext {
     setItemSearch: (itemSearched: string) => void,
     apiResponse: [],
     setApiResponse: (itemSearched: string) => Promise<[]>,
+    isModalOpen: boolean,
 
 }
 export const SearchContextDefaultValaues: SearchContext = {
@@ -53,6 +62,7 @@ export const SearchContextDefaultValaues: SearchContext = {
     setItemSearch: () => {},
     apiResponse: [],
     setApiResponse:  async (): Promise<[]> => [],
+    isModalOpen: false,
 }
 
 export const SearchContentProvider = createContext<SearchContext>(SearchContextDefaultValaues)
