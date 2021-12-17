@@ -37,13 +37,13 @@ export const SearchProvider: FC = () => {
     useEffect(() => {
         // handleChange(query).then(e => setAPIResponse(e));
         // setApiResponse('ap')
+        
     }, [searchItem])
     return (
         <SearchContentProvider.Provider value={{setItemSearch, searchItem, apiResponse, setApiResponse, isModalOpen}}>
             <View style={[colorTheme.searchContainer, {marginTop: '0%', marginBottom: '2%'}]}>
                 <TextInput placeholder='Search' placeholderTextColor={isDark ? 'white' : '#0072CE'} value={searchItem} onChange={() => setApiResponse(`${searchItem}`)} onChangeText={setItemSearch} style={colorTheme.inputSearch} onFocus={() => setSearchModal(true)} onBlur={() => setSearchModal(false)}></TextInput>
             </View>
-            {/* {searchItem === "" ? null : <SearchResponseModal/>} */}
             <SearchResponseModal/>
 
         </SearchContentProvider.Provider>
